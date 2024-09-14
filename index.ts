@@ -344,7 +344,7 @@ const checkIfCurrentEnteredNumbersCombinationCouldBecomeADeadEndCombinationIfWeA
 
 //End of first part of the algorithm as explained in the top comment 
 
-sudokuSolver([ [], 
+console.log(sudokuSolver([ [], 
     [],
     [],
     [],
@@ -352,5 +352,5 @@ sudokuSolver([ [],
     [],
     [],
     [],
-    [] ])
+    [] ]))
 

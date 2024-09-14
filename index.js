@@ -131,7 +131,7 @@ const sudokuSolver = (sudokuGrid = []) => {
             }
         }
     }
-    return currentEnteredNumbersCombination;
+    return sudokuGrid;
 };
 const findNumbersWithinowColumnOrThreeByThreeBlockWhereWeFindOurselves = (unavailableEnteredNumbersChoices, sudokuGrid, currentRow, currentColumn, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid) => {
     var numbersWithinRow = [];
@@ -327,7 +327,7 @@ const checkIfCurrentEnteredNumbersCombinationCouldBecomeADeadEndCombinationIfWeA
     return currentCombinationAndCurrentDeadEndEnteredNumbersCombinationContainSameItemsWithoutIncludingOurMatch; //This value will be true if we reach this step 
 };
 //End of first part of the algorithm as explained in the top comment 
-sudokuSolver([[],
+console.log(sudokuSolver([[],
     [],
     [],
     [],
@@ -335,4 +335,4 @@ sudokuSolver([[],
     [],
     [],
     [],
-    []]);
+    []]));
