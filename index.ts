@@ -139,7 +139,7 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
             }
         }
     }
-    return currentEnteredNumbersCombination
+    return sudokuGrid
 }
 
 const findNumbersWithinowColumnOrThreeByThreeBlockWhereWeFindOurselves = (unavailableEnteredNumbersChoices: number[], sudokuGrid: Grid, currentRow: number, currentColumn: number, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid: ThreeByThreeBlockIndicesFromGrid) => {
@@ -162,7 +162,7 @@ const findNumbersWithinowColumnOrThreeByThreeBlockWhereWeFindOurselves = (unavai
     addUnavailableEnteringNumbersChoicesFromGivenPoolToUnavailableEnteringNumbersChoices(unavailableEnteredNumbersChoices, numbersWithinThreeByThreeBlock)
 }
 
-const findThreeByThreeIndicesBlockWithinSudokuGridWhereCurrentRowAndCurrentColumnAreAt = (currentRow: number, currentColumn: number, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid) => {
+const findThreeByThreeIndicesBlockWithinSudokuGridWhereCurrentRowAndCurrentColumnAreAt = (currentRow: number, currentColumn: number, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid: ThreeByThreeBlockIndicesFromGrid) => {
     var threeByThreeBlockWithinThreeByThreeBlocksRowsAndColumnsIndicesWithinSudokuGridAtThisIndex:number = 0  
     var rowColumnWithinThisSpecificThreeByThreeGridWithinSudokuGridTuple: RowColumnIndicesFromThreeByThreeSubgridWithinGridTuple = [0, 0]
     var indicesFromThreeByThreeBlockWeFindOurselvesAt: Array<RowColumnIndicesFromThreeByThreeSubgridWithinGridTuple> = []
