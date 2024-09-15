@@ -123,6 +123,10 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                         currentColumn = backtrackingTargetPoint[1]                       
                         numberOfBlankSquaresForWhileLoopCounter++ 
                         unavailableEnteringNumbersChoices = []
+                        if(backtrackingCounts >= 50) {
+                            console.log(unavailableEnteringNumbersChoices)
+                            break
+                        }
                         console.log("DEAD END CASE BY DEAD END COMBINATION END") 
                         console.log("SQUARE ATTEMPTED END DUE TO DEAD END BY COMBINATION")
                         break 
@@ -216,23 +220,23 @@ const findNumbersWithinRowColumnOrThreeByThreeBlockWhereWeFindOurselves = (unava
     return unavailableEnteringNumbersChoices
 }
 
-const findThreeByThreeIndicesBlockWithinSudokuGridWhereCurrentRowAndCurrentColumnAreAt = (currentRow: number, currentColumn: number, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid: ThreeByThreeBlockIndicesFromGrid) => {
+const findThreeByThreeIndicesBlockWithinSudokuGridWhereCurrentRowAndCurrentColumnAreAt = (currentRow: number, currentColumn: number, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid: ThreeByThreeBlockIndicesFromGrid): RowColumnIndicesFromThreeByThreeSubgridWithinGridTuple[] => {
     var threeByThreeBlockWithinThreeByThreeBlocksRowsAndColumnsIndicesWithinSudokuGridAtThisIndex:number = 0  
     var rowColumnWithinThisSpecificThreeByThreeGridWithinSudokuGridTuple: RowColumnIndicesFromThreeByThreeSubgridWithinGridTuple = [0, 0]
     var indicesFromThreeByThreeBlockWeFindOurselvesAt: Array<RowColumnIndicesFromThreeByThreeSubgridWithinGridTuple> = []
     var threeByThreeBlockWithinSudokuGridWhereCurrentRowAndColumnAreWasFound: boolean = false 
     for(var i = 0; i < rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid.length; i++){ //We run a first nested loop as we iterate within our rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid array to find the specific 3x3 block where currentRow and currentColumn are within the sudoku grid 
         threeByThreeBlockWithinThreeByThreeBlocksRowsAndColumnsIndicesWithinSudokuGridAtThisIndex = i //The three by three block within the 9x9 grid we find ourselves at in a top-to-bottom first left-to-right second order 
-        for( var j = 0; j < rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid.length; j++){
+        for( var j = 0; j < rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid.length; j++){ //We iterate through a 3x3 block of 9x9 indices in the sudokku grid within this 3x3 block 
             rowColumnWithinThisSpecificThreeByThreeGridWithinSudokuGridTuple = rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid[threeByThreeBlockWithinThreeByThreeBlocksRowsAndColumnsIndicesWithinSudokuGridAtThisIndex][j]
             indicesFromThreeByThreeBlockWeFindOurselvesAt.push(rowColumnWithinThisSpecificThreeByThreeGridWithinSudokuGridTuple)
             if(rowColumnWithinThisSpecificThreeByThreeGridWithinSudokuGridTuple[0] === currentRow && rowColumnWithinThisSpecificThreeByThreeGridWithinSudokuGridTuple[1] === currentColumn) { //If current row and current colummn are within this 3x3 block
                 threeByThreeBlockWithinSudokuGridWhereCurrentRowAndColumnAreWasFound = true 
-                break
             }
         }
         if(threeByThreeBlockWithinSudokuGridWhereCurrentRowAndColumnAreWasFound){
-            break //We break after we have added all indices from the current 3x3 box which HAPPENS TO BE the box where current row and column are because we have set our boolean and now we have the indicesFromThreeByThreeBlockWeFindOurselvesAt array with the indices belonging to the 3x3 block we are at 
+            return indicesFromThreeByThreeBlockWeFindOurselvesAt
+            //Now we have the indicesFromThreeByThreeBlockWeFindOurselvesAt array with the indices belonging to the 3x3 block we are at 
         } else {
             indicesFromThreeByThreeBlockWeFindOurselvesAt = [] //We clear our current block array for the next iteration
         }
