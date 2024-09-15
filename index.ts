@@ -87,6 +87,7 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
     var squaresVisitsCount = 0
     numberOfBlankSquaresForWhileLoopCounter  = findBlankSquaresAmountCounterForMainWhileLoop(sudokuGrid)
     while(numberOfBlankSquaresForWhileLoopCounter > 0){
+        backtrackingCounts++
         console.log("BACKTRACKING START IF THIS IS SHOWN SECOND TIME BACKTRACKING COUNTS NUMBER FOLLOWS SUBTRACT ONE FROM IT", backtrackingCounts)
         for(var i = currentRow; i < 9; i++){ // We set our index variables to current row and current column since we will update this values and break the loops if performBackTracking is set to true as part of our backtracking process in order to undo combinations try another combination with a different value from a previously added value that we may be removing if we reach a dead end 
             for(var j = currentColumn; j < 9; j++){ //From the current row and current column variables we will keep iterating through the grid from top to bottom first left to right second 
@@ -98,7 +99,6 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                     console.log("BACKTRACKING COUNT", backtrackingCounts)
                     squaresAttemptedCount++
                     console.log("SQUARES ATTEMPTED COUNT", squaresAttemptedCount)
-                    squaresAttemptedCount++
                     unavailableEnteringNumbersChoices = findWhatEnteredNumbersIntoRowAndColumnWillLeadToDeadEndEnteredNumbersCombinationsIfThatCanHappen(unavailableEnteringNumbersChoices, i, j, deadEndEnteredNumbersCombinations, currentEnteredNumbersCombination)
                     //Note unavailableEnteringNumbersChoicesFromDeadEndCommbinationsPool may be emmpty but we do not need to check for that 
                     if(unavailableEnteringNumbersChoices.length === 9){ // If our unavailable entering numbers choices cover the entire possible number choices range we have reached a dead end because unavailableEnteringNumbersChoices has unique values and we have numbers from one to nine only within our program so we add our currentCombination to the deadEndEnteredNumbersCombinations array 
