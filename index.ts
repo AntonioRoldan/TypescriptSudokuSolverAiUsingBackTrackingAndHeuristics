@@ -85,21 +85,17 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
     
     numberOfBlankSquaresForWhileLoopCounter  = findBlankSquaresAmountCounterForMainWhileLoop(sudokuGrid)
     while(numberOfBlankSquaresForWhileLoopCounter > 0){
-        console.log("Current row after updating", currentRow)
-        console.log("Current column after updating", currentColumn)
         for(var i = currentRow; i < 9; i++){ // We set our index variables to current row and current column since we will update this values and break the loops if performBackTracking is set to true as part of our backtracking process in order to undo combinations try another combination with a different value from a previously added value that we may be removing if we reach a dead end 
-            for(var j = currentColumn; i < 9; j++){ //From the current row and current column variables we will keep iterating through the grid from top to bottom first left to right second 
-                currentColumn = j 
-                console.log("Current row as we iterate", currentRow)
-                console.log("Current column as we iterate", currentColumn)
-                if(sudokuGrid[currentRow][currentColumn] == 0){
-                    unavailableEnteringNumbersChoices = findWhatEnteredNumbersIntoRowAndColumnWillLeadToDeadEndEnteredNumbersCombinationsIfThatCanHappen(unavailableEnteringNumbersChoices, currentRow, currentColumn, deadEndEnteredNumbersCombinations, currentEnteredNumbersCombination)
+            for(var j = currentColumn; j < 9; j++){ //From the current row and current column variables we will keep iterating through the grid from top to bottom first left to right second 
+                if(sudokuGrid[i][j] === 0){
+                    console.log("Found empty square")
+                    unavailableEnteringNumbersChoices = findWhatEnteredNumbersIntoRowAndColumnWillLeadToDeadEndEnteredNumbersCombinationsIfThatCanHappen(unavailableEnteringNumbersChoices, i, j, deadEndEnteredNumbersCombinations, currentEnteredNumbersCombination)
                     //Note unavailableEnteringNumbersChoicesFromDeadEndCommbinationsPool may be emmpty but we do not need to check for that 
                     if(unavailableEnteringNumbersChoices.length === 9){ // If our unavailable entering numbers choices cover the entire possible number choices range we have reached a dead end because unavailableEnteringNumbersChoices has unique values and we have numbers from one to nine only within our program so we add our currentCombination to the deadEndEnteredNumbersCombinations array 
                         deadEndEnteredNumbersCombinations.push([currentEnteredNumbersCombination].flat(1) as unknown as RowColumnEnteredValueTuple[])
                         performBacktracking = true 
                         //Next we go to a previously filled square within our same column, row or 3x3 block within the grid AND remove that element to enter a new one we update the currentColumn and currentRow values remove the value both from the sudoku and current combination and use it to uodate currentRow and currentColumn increase the blank square counter for our while loop and break the nested for loop 
-                        backtrackingTargetPoint = returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockAsARowColumnValueTupleToEmptyItAndRefillIt(currentRow, currentColumn, sudokuGrid, currentEnteredNumbersCombination, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
+                        backtrackingTargetPoint = returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockAsARowColumnValueTupleToEmptyItAndRefillIt(i, j, sudokuGrid, currentEnteredNumbersCombination, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
                         //We remove our backtrackingTargetPoint value that is the value for our already filled square we are backtracking from from the sudoku grid and replace it with a zero AND we also remove it from currentEnteredNumbersCombination 
                         
                         currentEnteredNumbersCombination = removeSquareValueFromSudokuAndSquareRowColumnAndValueFromCurrentEnteredNumbersCombination(sudokuGrid, currentEnteredNumbersCombination, backtrackingTargetPoint)
@@ -114,12 +110,12 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
 
                         break 
                     } // We don't need an else since we break within this if statements 
-                    unavailableEnteringNumbersChoices = findNumbersWithinowColumnOrThreeByThreeBlockWhereWeFindOurselves(unavailableEnteringNumbersChoices, sudokuGrid, currentRow, currentColumn, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
+                    unavailableEnteringNumbersChoices = findNumbersWithinowColumnOrThreeByThreeBlockWhereWeFindOurselves(unavailableEnteringNumbersChoices, sudokuGrid, i, j, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
                     if(unavailableEnteringNumbersChoices.length === 9) {
                         deadEndEnteredNumbersCombinations.push([currentEnteredNumbersCombination].flat(1) as unknown as RowColumnEnteredValueTuple[])
                         performBacktracking = true 
                         //Next we go to a previously filled square within our same column, row or 3x3 block within the grid AND remove that element to enter a new one we update the currentColumn and currentRow values remove the value both from the sudoku and current combination and use it to uodate currentRow and currentColumn increase the blank square counter for our while loop and break the nested for loop 
-                        backtrackingTargetPoint = returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockAsARowColumnValueTupleToEmptyItAndRefillIt(currentRow, currentColumn, sudokuGrid, currentEnteredNumbersCombination, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
+                        backtrackingTargetPoint = returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockAsARowColumnValueTupleToEmptyItAndRefillIt(i, j, sudokuGrid, currentEnteredNumbersCombination, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
                         //We remove our backtrackingTargetPoint value that is the value for our already filled square we are backtracking from from the sudoku grid and replace it with a zero AND we also remove it from currentEnteredNumbersCombination 
                         currentEnteredNumbersCombination = removeSquareValueFromSudokuAndSquareRowColumnAndValueFromCurrentEnteredNumbersCombination(sudokuGrid, currentEnteredNumbersCombination, backtrackingTargetPoint)
                         console.log("CurrentEnteredNumbersCombination has removed a square", currentEnteredNumbersCombination)
@@ -132,16 +128,17 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                         break 
                     }
                     //Here we add the number to the square if there are numbers to fill our square with which we have already checked and since the loop has not broken by this point our checks have been successful 
-                    for(var i = 0; i < possibleNumberChoices.length; i++){
-                        if(unavailableEnteringNumbersChoices.includes(possibleNumberChoices[i])){
+                    for(var k = 0; k < possibleNumberChoices.length; k++){
+                        if(unavailableEnteringNumbersChoices.includes(possibleNumberChoices[k])){
                             continue
                         } else {
-                            numbersThatWeCanEnterIntoThisBlankSquare.push(possibleNumberChoices[i])
+                            numbersThatWeCanEnterIntoThisBlankSquare.push(possibleNumberChoices[k])
                         }
                     }
+                    console.log(unavailableEnteringNumbersChoices)
                     newNumberToBeAdded = numbersThatWeCanEnterIntoThisBlankSquare[Math.floor(Math.random() * numbersThatWeCanEnterIntoThisBlankSquare.length)] // We add the new number to our sudoku which is a random number from the numbers we can enter
-                    sudokuGrid[currentRow][currentColumn] = newNumberToBeAdded 
-                    currentEnteredNumbersCombination.push([currentRow, currentColumn, newNumberToBeAdded] as RowColumnEnteredValueTuple)
+                    sudokuGrid[i][j] = newNumberToBeAdded 
+                    currentEnteredNumbersCombination.push([i, j, newNumberToBeAdded] as RowColumnEnteredValueTuple)
                     numbersThatWeCanEnterIntoThisBlankSquare = []
                     unavailableEnteringNumbersChoices = []
                     numberOfBlankSquaresForWhileLoopCounter -= 1 
