@@ -112,7 +112,7 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                         backtrackingTargetPoint = returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockAsARowColumnValueTupleToEmptyItAndRefillIt(i, j, sudokuGrid, currentEnteredNumbersCombination, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
                         //We remove our backtrackingTargetPoint value that is the value for our already filled square we are backtracking from from the sudoku grid and replace it with a zero AND we also remove it from currentEnteredNumbersCombination 
                         console.log("Square to be removed and backtracked", backtrackingTargetPoint)
-                        console.log("Current entered numbers combination before removing square"), currentEnteredNumbersCombination
+                        console.log("Current entered numbers combination before removing square", currentEnteredNumbersCombination)
                         currentEnteredNumbersCombination = removeSquareValueFromSudokuAndSquareRowColumnAndValueFromCurrentEnteredNumbersCombination(sudokuGrid, currentEnteredNumbersCombination, backtrackingTargetPoint)
                         console.log("Current entered numbers combination after removal", currentEnteredNumbersCombination)
                         currentRow = backtrackingTargetPoint[0]
@@ -134,7 +134,7 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                         //Next we go to a previously filled square within our same column, row or 3x3 block within the grid AND remove that element to enter a new one we update the currentColumn and currentRow values remove the value both from the sudoku and current combination and use it to uodate currentRow and currentColumn increase the blank square counter for our while loop and break the nested for loop 
                         backtrackingTargetPoint = returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockAsARowColumnValueTupleToEmptyItAndRefillIt(i, j, sudokuGrid, currentEnteredNumbersCombination, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
                         console.log("Square to be removed and backtracked", backtrackingTargetPoint)
-                        console.log("Current entered numbers combination before removing square"), currentEnteredNumbersCombination
+                        console.log("Current entered numbers combination before removing square", currentEnteredNumbersCombination)
                         //We remove our backtrackingTargetPoint value that is the value for our already filled square we are backtracking from from the sudoku grid and replace it with a zero AND we also remove it from currentEnteredNumbersCombination 
                         currentEnteredNumbersCombination = removeSquareValueFromSudokuAndSquareRowColumnAndValueFromCurrentEnteredNumbersCombination(sudokuGrid, currentEnteredNumbersCombination, backtrackingTargetPoint)
                         console.log("Current entered numbers combination after removal", currentEnteredNumbersCombination)
