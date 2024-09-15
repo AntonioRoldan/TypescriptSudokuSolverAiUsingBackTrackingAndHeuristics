@@ -91,7 +91,7 @@ const sudokuSolver = (sudokuGrid = []) => {
                         currentEnteredNumbersCombination = removeSquareValueFromSudokuAndSquareRowColumnAndValueFromCurrentEnteredNumbersCombination(sudokuGrid, currentEnteredNumbersCombination, backtrackingTargetPoint);
                         console.log("CurrentEnteredNumbersCombination has removed a square", currentEnteredNumbersCombination);
                         console.log("Sudoku grid after removing square", sudokuGrid);
-                        console.log("Current row and current column from dead end due to combination", currentRow + currentColumn);
+                        console.log("Current row and current column from dead end due to combinatipreviouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray[Math.floor(Math.random() * previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.length)]on", currentRow + currentColumn);
                         console.log("Back tracking target point", backtrackingTargetPoint);
                         currentRow = backtrackingTargetPoint[0];
                         currentColumn = backtrackingTargetPoint[1];
@@ -221,6 +221,7 @@ const returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockA
     var potentialPreviouslyFilledSquareAsARowColumnValueTuple = [0, 0, 0];
     var indicesFromThreeByThreeBlockWeFindOurselvesAt = [];
     var threeByThreeBlockWithinSudokuGridWhereCurrentRowAndColumnAreWasFound = false;
+    var backtrackingTargetPoint = [0, 0, 0];
     //First we check the squares within our current row we found ourselves at in the grid looking for previously filled squares there 
     //We are looking for SQUARES within the row or traversing the row that is why we go column by column (the i variable represents the column)
     for (var i = 0; i < 9; i++) {
@@ -257,12 +258,12 @@ const returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockA
     previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray = [...new Set(previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray)]; // We make it unique since we may have row or column values within our 3x3 block that alter the randomness of our choice 
     //We return a random value from here. Note if the array length is one since our value for the seed would be zero and we will return the only value there is in the array
     if (previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.length > 0) { //If wee are in the second or third case backtrack to a square from previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray
-        console.log("Backtracking target point for repeated values or repeated values AND deadend combination");
-        return previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray[Math.floor(Math.random() * previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.length)];
+        backtrackingTargetPoint = previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray[Math.floor(Math.random() * previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.length)];
+        return backtrackingTargetPoint;
     }
     else { //If we find ourselves in the first case (where any number we add to a new array will lead us to a dead end scenario) we backtrack to a square from currentCombination 
-        console.log("Bactracking target point for deadend combination");
-        return currentEnteredNumbersCombination[Math.floor(Math.random() * currentEnteredNumbersCombination.length)]; //We know in this case we must have filled squares already in our currentCombination array because we have reached a dead end situation by possible dead end combination resulting from any number typed in a square any possible dead combination must have at least TWO elements so our currentCombination array has at least one element which we can rewrite. Whenver that we reach this flow of execution branch currentCombination will be filled with values
+        backtrackingTargetPoint = currentEnteredNumbersCombination[Math.floor(Math.random() * currentEnteredNumbersCombination.length)];
+        return backtrackingTargetPoint; //We know in this case we must have filled squares already in our currentCombination array because we have reached a dead end situation by possible dead end combination resulting from any number typed in a square any possible dead combination must have at least TWO elements so our currentCombination array has at least one element which we can rewrite. Whenver that we reach this flow of execution branch currentCombination will be filled with values
     } //And that is not necessarily the scenario in the other two cases 
 };
 // The function that gets the starting value of the counter for our while loop at the start of our algorithm 
