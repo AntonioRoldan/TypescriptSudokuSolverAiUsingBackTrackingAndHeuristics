@@ -39,6 +39,7 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
     var possibleNumberChoices: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9] //The algorithm will iterate through this numbers after filling the unavailableNumbers array if the number is not found in the unavailableNumbers array- The algorithm will fill the blank with that number 
     var unavailableEnteringNumbersChoices: number[] = [] //Numbers found on the same row, on the same column or on the same 3x3 grid or as part of a dead end combination. which we cannot repeat the number that the algorithm will enter in a blank square will be a number that is not found within this array BUT is found in the possibleNumberChoices array
     var numbersThatWeCanEnterIntoThisBlankSquare: number[] = []
+    var unavailableEnteringNumbersChoicesFromRepeatedValuesInRowColumnAndThreeByThreeGrid: number[] = []
     var newlyAddedFilledSquare: RowColumnEnteredValueTuple = [0, 0, 0]
     var performBacktracking: boolean = false 
     var newNumberToBeAdded: number = 0 
@@ -94,9 +95,9 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                 console.log("SQUARE VISITED START")
                 console.log("CURRENT ROW", i)
                 console.log("CURRENT COLUMN", j)
-                // console.log("\n \n \n")
-                // console.log("CURRENT SUDOKU", sudokuGrid)
-                // console.log("\n \n \n")
+                console.log("\n \n \n")
+                console.log("CURRENT SUDOKU", sudokuGrid)
+                console.log("\n \n \n")
 
                 squaresVisitsCount++
                 console.log("SQUARES VISITS COUNT", squaresVisitsCount)
@@ -135,7 +136,11 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                         break 
                     } // We don't need an else since we break within this if statements 
                     console.log("CHECKING UNAVAILABLE NUMBERS FROM REPEATED VALUES BEGGINING")
-                    unavailableEnteringNumbersChoices = findNumbersWithinRowColumnOrThreeByThreeBlockWhereWeFindOurselves(unavailableEnteringNumbersChoices, sudokuGrid, i, j, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
+                    unavailableEnteringNumbersChoicesFromRepeatedValuesInRowColumnAndThreeByThreeGrid = findNumbersWithinRowColumnOrThreeByThreeBlockWhereWeFindOurselves(unavailableEnteringNumbersChoices, sudokuGrid, i, j, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
+                    for(var l = 0; l < unavailableEnteringNumbersChoicesFromRepeatedValuesInRowColumnAndThreeByThreeGrid.length; l++){
+                        unavailableEnteringNumbersChoices.push(unavailableEnteringNumbersChoicesFromRepeatedValuesInRowColumnAndThreeByThreeGrid[l])
+                    }
+                    unavailableEnteringNumbersChoices = [... new Set(unavailableEnteringNumbersChoices)].filter((forbiddenNumbersToEnter) => forbiddenNumbersToEnter !== 0)
                     console.log("Unavailable entering numbers choices from repeated values", unavailableEnteringNumbersChoices)
                     console.log("CHECKING UNAVAILABLE NUMBERS FROM REPEATED VALUES END")
                     if(unavailableEnteringNumbersChoices.length === 9) {
@@ -156,13 +161,14 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                         break 
                     }
                     //Here we add the number to the square if there are numbers to fill our square with which we have already checked and since the loop has not broken by this point our checks have been successful 
-                    for(var k = 0; k < possibleNumberChoices.length; k++){
-                        if(unavailableEnteringNumbersChoices.includes(possibleNumberChoices[k])){
+                    for(var l = 0; l < possibleNumberChoices.length; l++){
+                        if(unavailableEnteringNumbersChoices.includes(possibleNumberChoices[l])){
                             continue
                         } else {
-                            numbersThatWeCanEnterIntoThisBlankSquare.push(possibleNumberChoices[k])
+                            numbersThatWeCanEnterIntoThisBlankSquare.push(possibleNumberChoices[l])
                         }
                     }
+                    console.log("New number to be added", newNumberToBeAdded)
                     console.log("ADDING NEW SQUARE BEGINNING")
                     console.log("Unavailable entering numbers for adding numbers", unavailableEnteringNumbersChoices)
                     console.log("Nummbers that we can enter into this blank square", numbersThatWeCanEnterIntoThisBlankSquare)
@@ -289,6 +295,9 @@ const returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockA
         potentialPreviouslyFilledSquareAsARowColumnValueTuple[0] = sudokuGridsRowWhereWeAreLookingForAPreviouslyFilledSquareAsARowColumnValueTuple
         potentialPreviouslyFilledSquareAsARowColumnValueTuple[1] = i
         potentialPreviouslyFilledSquareAsARowColumnValueTuple[2] = sudokuGrid[sudokuGridsRowWhereWeAreLookingForAPreviouslyFilledSquareAsARowColumnValueTuple][i]
+        if(sudokuGridsColumnWhereWeAreLookingForAPreviouslyFilledSquareAsARowColumnValueTuple === i){
+            continue
+        }
         if(currentEnteredNumbersCombination.includes(potentialPreviouslyFilledSquareAsARowColumnValueTuple)){
             previouslyFilledSquareAsRowColumnValueTuple = potentialPreviouslyFilledSquareAsARowColumnValueTuple
             previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.push(previouslyFilledSquareAsRowColumnValueTuple)
@@ -299,6 +308,9 @@ const returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockA
         potentialPreviouslyFilledSquareAsARowColumnValueTuple[0] = i 
         potentialPreviouslyFilledSquareAsARowColumnValueTuple[1] = sudokuGridsColumnWhereWeAreLookingForAPreviouslyFilledSquareAsARowColumnValueTuple
         potentialPreviouslyFilledSquareAsARowColumnValueTuple[2] = sudokuGrid[i][sudokuGridsColumnWhereWeAreLookingForAPreviouslyFilledSquareAsARowColumnValueTuple]
+        if(sudokuGridsRowWhereWeAreLookingForAPreviouslyFilledSquareAsARowColumnValueTuple === i){
+            continue
+        }
         if(currentEnteredNumbersCombination.includes(potentialPreviouslyFilledSquareAsARowColumnValueTuple)){
             previouslyFilledSquareAsRowColumnValueTuple = potentialPreviouslyFilledSquareAsARowColumnValueTuple
             previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.push(previouslyFilledSquareAsRowColumnValueTuple)
@@ -310,6 +322,9 @@ const returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockA
         rowColumnIndicesWithinThreeByThreeBlockWhereCurrentRowAndColumnAreLocated = indicesFromThreeByThreeBlockWeFindOurselvesAt[i]
         potentialPreviouslyFilledSquareAsARowColumnValueTuple[0] = rowColumnIndicesWithinThreeByThreeBlockWhereCurrentRowAndColumnAreLocated[0] //Row index
         potentialPreviouslyFilledSquareAsARowColumnValueTuple[1] = rowColumnIndicesWithinThreeByThreeBlockWhereCurrentRowAndColumnAreLocated[1] //Column index s
+        if(potentialPreviouslyFilledSquareAsARowColumnValueTuple[0] === currentRow && potentialPreviouslyFilledSquareAsARowColumnValueTuple[1] === currentColumn){
+            continue
+        }
         potentialPreviouslyFilledSquareAsARowColumnValueTuple[2] = sudokuGrid[rowColumnIndicesWithinThreeByThreeBlockWhereCurrentRowAndColumnAreLocated[0]][rowColumnIndicesWithinThreeByThreeBlockWhereCurrentRowAndColumnAreLocated[1]] // Value 
         if(currentEnteredNumbersCombination.includes(potentialPreviouslyFilledSquareAsARowColumnValueTuple)) { //If this square within the 3x3 block where current row and current column variables are located has been filled by us before 
             previouslyFilledSquareAsRowColumnValueTuple = potentialPreviouslyFilledSquareAsARowColumnValueTuple
@@ -410,13 +425,13 @@ const checkIfCurrentEnteredNumbersCombinationCouldBecomeADeadEndCombinationIfWeA
 
 //End of first part of the algorithm as explained in the top comment 
 
-console.log(sudokuSolver([ [0, 5, 0, 0, 0, 0, 0, 7, 0], 
-    [7, 0, 6, 0, 1, 0, 0, 2, 9],
-    [9, 0, 0, 0, 0, 4, 0, 6, 0],
-    [0, 2, 0, 3, 0, 0, 0, 0, 0],
-    [0, 1, 0, 0, 6, 0, 0, 0, 0],
-    [5, 0, 0, 0, 0, 7, 0, 1, 3],
-    [0, 0, 0, 9, 4, 0, 0, 0, 0],
-    [3, 0, 9, 0, 2, 8, 7, 0, 5],
-    [0, 4, 0, 5, 7, 0, 0, 0, 6] ]))
+console.log(sudokuSolver([ [0, 0, 0, 9, 0, 0, 0, 0, 0], 
+    [0, 0, 0, 0, 3, 0, 0, 0, 1],
+    [3, 7, 4, 0, 0, 0, 0, 8, 2],
+    [4, 9, 0, 2, 8, 0, 0, 0, 0],
+    [0, 1, 0, 0, 7, 0, 0, 6, 9],
+    [7, 0, 0, 0, 1, 0, 2, 0, 0],
+    [0, 0, 0, 0, 0, 5, 0, 1, 3],
+    [5, 0, 1, 0, 9, 0, 0, 0, 7],
+    [0, 2, 0, 3, 6, 0, 0, 0, 4] ]))
 
