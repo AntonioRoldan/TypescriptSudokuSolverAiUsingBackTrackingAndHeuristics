@@ -85,7 +85,7 @@ const sudokuSolver = (sudokuGrid = []) => {
             for (var j = currentColumn; j < 9; j++) { //From the current row and current column variables we will keep iterating through the grid from top to bottom first left to right second 
                 console.log("SQUARE VISITED START");
                 console.log("CURRENT ROW", i);
-                console.log("CURRENT COLUMN");
+                console.log("CURRENT COLUMN", j);
                 squaresVisitsCount++;
                 console.log("SQUARES VISITS COUNT", squaresVisitsCount);
                 if (sudokuGrid[i][j] === 0) {
@@ -173,6 +173,7 @@ const sudokuSolver = (sudokuGrid = []) => {
     return sudokuGrid;
 };
 const findNumbersWithinRowColumnOrThreeByThreeBlockWhereWeFindOurselves = (unavailableEnteringNumbersChoices, sudokuGrid, currentRow, currentColumn, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid) => {
+    console.log("FINDING NUMBERS NOT TO BE REPEATED WITHIN SAME ROW COLUMN AND 3X3 GRID BEGINNINNG");
     var numbersWithinRow = [];
     var numbersWithinColumn = [];
     var numbersWithinThreeByThreeBlock = [];
@@ -199,6 +200,10 @@ const findNumbersWithinRowColumnOrThreeByThreeBlockWhereWeFindOurselves = (unava
     unavailableEnteringNumbersChoices = addUnavailableEnteringNumbersChoicesFromGivenPoolToUnavailableEnteringNumbersChoices(unavailableEnteringNumbersChoices, numbersWithinRow);
     unavailableEnteringNumbersChoices = addUnavailableEnteringNumbersChoicesFromGivenPoolToUnavailableEnteringNumbersChoices(unavailableEnteringNumbersChoices, numbersWithinColumn);
     unavailableEnteringNumbersChoices = addUnavailableEnteringNumbersChoicesFromGivenPoolToUnavailableEnteringNumbersChoices(unavailableEnteringNumbersChoices, numbersWithinThreeByThreeBlock);
+    console.log("NUMBERS WIITHIN ROW", numbersWithinRow);
+    console.log("NUMBERS WITHIN COLUMN", numbersWithinColumn);
+    console.log("NUMBERS WITHIN 3X3 BLOCK", numbersWithinThreeByThreeBlock);
+    console.log("FINDING NUMBERS NOT TO BE REPEATED WITHIN SAME ROW COLUMN AND 3X3 GRID END");
     return unavailableEnteringNumbersChoices;
 };
 const findThreeByThreeIndicesBlockWithinSudokuGridWhereCurrentRowAndCurrentColumnAreAt = (currentRow, currentColumn, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid) => {
