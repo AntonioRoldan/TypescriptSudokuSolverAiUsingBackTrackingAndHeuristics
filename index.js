@@ -84,10 +84,14 @@ const sudokuSolver = (sudokuGrid = []) => {
         for (var i = currentRow; i < 9; i++) { // We set our index variables to current row and current column since we will update this values and break the loops if performBackTracking is set to true as part of our backtracking process in order to undo combinations try another combination with a different value from a previously added value that we may be removing if we reach a dead end 
             for (var j = currentColumn; j < 9; j++) { //From the current row and current column variables we will keep iterating through the grid from top to bottom first left to right second 
                 console.log("SQUARE VISITED START");
+                console.log("CURRENT ROW", i);
+                console.log("CURRENT COLUMN");
                 squaresVisitsCount++;
                 console.log("SQUARES VISITS COUNT", squaresVisitsCount);
                 if (sudokuGrid[i][j] === 0) {
                     console.log("SQUARE ATTEMPTED BEGGINING ");
+                    console.log("Blank square row", i);
+                    console.log("Blank square column", j);
                     console.log("BACKTRACKING COUNT", backtrackingCounts);
                     squaresAttemptedCount++;
                     console.log("SQUARES ATTEMPTED COUNT", squaresAttemptedCount);
