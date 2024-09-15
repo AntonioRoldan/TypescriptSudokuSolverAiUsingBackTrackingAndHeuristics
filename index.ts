@@ -13,7 +13,7 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
     //3x3 blocks are stores on a left to right basis, top to bottom in terms of rows so first one row and within that row each column, then we go for the next row and so on in a top to bottom fashion
 
     //The program will traverse the sudokuGrid data structure and check for blanks squares that is rows and columns directions within the sudokuGrid data structure which contain 0 as a number then increase a counter with the total amount of blank squares 
-    //It will then set the counter for the while loop as we enter numbers or remove them we will increase or decrease the counter 
+    //It will then use the counter for the while loop as we enter numbers or remove them as part of our backtracking process we will increase or decrease the counter if the counter is zero the program will have found the solution 
     //After that it will traverse the sudokuGriid again looking for blank squares in the same way as we explained at the beginning of this comment 
     //Once at a blank square it will check if its row column is contained in one or more of the deadEndEnteredNumbersCombinations arrays and it will iterate through the deadEndEnteredNumbersCombinations data structure to do it and if the currentCombination variable is the same as the deadEndEnteredNumbersCombinations where the row column match has been found without our found match by row or column the currentRow and currentColumn variables
     //If they are the same it means if we add the value of our match by row and column to our current square with which the match matches in row and column we will get a dead end so we add this number to the unavailableEnteredNumbersChoices array 
@@ -142,7 +142,7 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
     return sudokuGrid
 }
 
-const findNumbersWithinowColumnOrThreeByThreeBlockWhereWeFindOurselves = (unavailableEnteredNumbersChoices: number[], sudokuGrid: Grid, currentRow: number, currentColumn: number, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid: ThreeByThreeBlockIndicesFromGrid) => {
+const findNumbersWithinowColumnOrThreeByThreeBlockWhereWeFindOurselves = (unavailableEnteringNumbersChoices: number[], sudokuGrid: Grid, currentRow: number, currentColumn: number, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid: ThreeByThreeBlockIndicesFromGrid) => {
     var numbersWithinRow: number[] = []
     var numbersWithinColumn: number[] = []
     var numbersWithinThreeByThreeBlock: number[] = []
@@ -157,9 +157,9 @@ const findNumbersWithinowColumnOrThreeByThreeBlockWhereWeFindOurselves = (unavai
     for(var i = 0; i < rowColumnIndicesFromThreeByThreeBlockWeFindOurselvesAt.length; i++){
         numbersWithinThreeByThreeBlock.push(sudokuGrid[rowColumnIndicesFromThreeByThreeBlockWeFindOurselvesAt[i][0]][rowColumnIndicesFromThreeByThreeBlockWeFindOurselvesAt[i][1]]) //We get the row and column of this square within the three by three block and access the number from the sudoku grid 
     }
-    addUnavailableEnteringNumbersChoicesFromGivenPoolToUnavailableEnteringNumbersChoices(unavailableEnteredNumbersChoices, numbersWithinRow)
-    addUnavailableEnteringNumbersChoicesFromGivenPoolToUnavailableEnteringNumbersChoices(unavailableEnteredNumbersChoices, numbersWithinColumn)
-    addUnavailableEnteringNumbersChoicesFromGivenPoolToUnavailableEnteringNumbersChoices(unavailableEnteredNumbersChoices, numbersWithinThreeByThreeBlock)
+    addUnavailableEnteringNumbersChoicesFromGivenPoolToUnavailableEnteringNumbersChoices(unavailableEnteringNumbersChoices, numbersWithinRow)
+    addUnavailableEnteringNumbersChoicesFromGivenPoolToUnavailableEnteringNumbersChoices(unavailableEnteringNumbersChoices, numbersWithinColumn)
+    addUnavailableEnteringNumbersChoicesFromGivenPoolToUnavailableEnteringNumbersChoices(unavailableEnteringNumbersChoices, numbersWithinThreeByThreeBlock)
 }
 
 const findThreeByThreeIndicesBlockWithinSudokuGridWhereCurrentRowAndCurrentColumnAreAt = (currentRow: number, currentColumn: number, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid: ThreeByThreeBlockIndicesFromGrid) => {
@@ -344,13 +344,13 @@ const checkIfCurrentEnteredNumbersCombinationCouldBecomeADeadEndCombinationIfWeA
 
 //End of first part of the algorithm as explained in the top comment 
 
-console.log(sudokuSolver([ [], 
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [] ]))
+console.log(sudokuSolver([ [0, 5, 0, 0, 0, 0, 0, 7, 0], 
+    [7, 0, 6, 0, 1, 0, 0, 2, 9],
+    [9, 0, 0, 0, 0, 4, 0, 6, 0],
+    [0, 2, 0, 3, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 6, 0, 0, 0, 0],
+    [5, 0, 0, 0, 0, 7, 0, 1, 3],
+    [0, 0, 0, 9, 4, 0, 0, 0, 0],
+    [3, 0, 9, 0, 2, 8, 7, 0, 5],
+    [0, 4, 0, 5, 7, 0, 0, 0, 6] ]))
 
