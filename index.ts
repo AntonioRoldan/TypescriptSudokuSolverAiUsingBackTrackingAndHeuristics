@@ -99,9 +99,10 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                         backtrackingTargetPoint = returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockAsARowColumnValueTupleToEmptyItAndRefillIt(currentRow, currentColumn, sudokuGrid, currentEnteredNumbersCombination, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
                         //We remove our backtrackingTargetPoint value that is the value for our already filled square we are backtracking from from the sudoku grid and replace it with a zero AND we also remove it from currentEnteredNumbersCombination 
                         
-                        removeSquareValueFromSudokuAndSquareRowColumnAndValueFromCurrentEnteredNumbersCombination(sudokuGrid, currentEnteredNumbersCombination, backtrackingTargetPoint)
+                        currentEnteredNumbersCombination = removeSquareValueFromSudokuAndSquareRowColumnAndValueFromCurrentEnteredNumbersCombination(sudokuGrid, currentEnteredNumbersCombination, backtrackingTargetPoint)
                         console.log("CurrentEnteredNumbersCombination has removed a square", currentEnteredNumbersCombination)
                         console.log("Sudoku grid after removing square", sudokuGrid)
+                        console.log("Current row and current column from dead end due to combination", currentRow + currentColumn)
                         currentRow = backtrackingTargetPoint[0]
                         currentColumn = backtrackingTargetPoint[1]
                         numberOfBlankSquaresForWhileLoopCounter++ 
@@ -120,6 +121,8 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                         currentEnteredNumbersCombination = removeSquareValueFromSudokuAndSquareRowColumnAndValueFromCurrentEnteredNumbersCombination(sudokuGrid, currentEnteredNumbersCombination, backtrackingTargetPoint)
                         console.log("CurrentEnteredNumbersCombination has removed a square", currentEnteredNumbersCombination)
                         console.log("Sudoku grid after removing square", sudokuGrid)
+                        console.log("Current row and current column from dead end due to repeated value", currentRow + currentColumn)
+
                         currentRow = backtrackingTargetPoint[0]
                         currentColumn = backtrackingTargetPoint[1]
                         numberOfBlankSquaresForWhileLoopCounter++ 
