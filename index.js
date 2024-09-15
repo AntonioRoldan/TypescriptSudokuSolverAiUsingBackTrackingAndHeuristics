@@ -160,7 +160,6 @@ const sudokuSolver = (sudokuGrid = []) => {
                             numbersThatWeCanEnterIntoThisBlankSquare.push(possibleNumberChoices[l]);
                         }
                     }
-                    console.log("New number to be added", newNumberToBeAdded);
                     console.log("ADDING NEW SQUARE BEGINNING");
                     console.log("Unavailable entering numbers for adding numbers", unavailableEnteringNumbersChoices);
                     console.log("Nummbers that we can enter into this blank square", numbersThatWeCanEnterIntoThisBlankSquare);
