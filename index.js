@@ -90,7 +90,6 @@ const sudokuSolver = (sudokuGrid = []) => {
                 console.log("CURRENT COLUMN", j);
                 console.log("\n \n \n");
                 console.log("CURRENT SUDOKU", sudokuGrid);
-                pastSudokus.push(sudokuGrid);
                 console.log("\n \n \n");
                 squaresVisitsCount++;
                 console.log("SQUARES VISITS COUNT", squaresVisitsCount);
@@ -168,6 +167,10 @@ const sudokuSolver = (sudokuGrid = []) => {
                     newNumberToBeAdded = numbersThatWeCanEnterIntoThisBlankSquare[Math.floor(Math.random() * numbersThatWeCanEnterIntoThisBlankSquare.length)]; // We add the new number to our sudoku which is a random number from the numbers we can enter
                     sudokuGrid[i][j] = newNumberToBeAdded;
                     currentEnteredNumbersCombination.push([i, j, newNumberToBeAdded]);
+                    if (pastSudokus.includes(sudokuGrid)) { //Checking if program adds a value twice on the same square first we add the number then we run the check then we push becuase at the next iteration we are comparing against a pastly entered value
+                        console.log("Sudoku repeating", sudokuGrid);
+                    }
+                    pastSudokus.push(sudokuGrid); //We know the first time it won't be repeated if we checked after we add it would be absurd but if check above is true that means we added  the number already because we are not pushing a second time 
                     numbersThatWeCanEnterIntoThisBlankSquare = [];
                     unavailableEnteringNumbersChoices = [];
                     numberOfBlankSquaresForWhileLoopCounter -= 1;
