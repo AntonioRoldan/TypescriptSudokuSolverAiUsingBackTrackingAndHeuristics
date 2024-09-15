@@ -85,6 +85,7 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
     //NOTE: First we must find the number of blank squares there are so we can set a while loop that indefinitely runs the algorithm until all blanks have been filled 
     var backtrackingCounts = 0 
     var squaresAttemptedCount = 0
+    var pastSudokus: Grid[] = []
     var squaresVisitsCount = 0
     numberOfBlankSquaresForWhileLoopCounter  = findBlankSquaresAmountCounterForMainWhileLoop(sudokuGrid)
     while(numberOfBlankSquaresForWhileLoopCounter > 0){
@@ -97,8 +98,8 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                 console.log("CURRENT COLUMN", j)
                 console.log("\n \n \n")
                 console.log("CURRENT SUDOKU", sudokuGrid)
+                pastSudokus.push(sudokuGrid)
                 console.log("\n \n \n")
-
                 squaresVisitsCount++
                 console.log("SQUARES VISITS COUNT", squaresVisitsCount)
                 if(sudokuGrid[i][j] === 0){
@@ -404,19 +405,21 @@ const findWhatEnteredNumbersIntoRowAndColumnWillLeadToDeadEndEnteredNumbersCombi
     return unavailableEnteredNumbersChoices
 } 
 
-const checkIfCurrentEnteredNumbersCombinationCouldBecomeADeadEndCombinationIfWeAddMatchingValueAtCurrentRowColumn = (currentEnteredNumbersCombination: RowColumnEnteredValueTuple[], deadEndEnteredNumbersCombination: RowColumnEnteredValueTuple[], matchingEnteredNumberAtRowAndColumnWithinDeadEndCombinationWithCurrentRowAndColumn: RowColumnEnteredValueTuple) => {
+const checkIfCurrentEnteredNumbersCombinationCouldBecomeADeadEndCombinationIfWeAddMatchingValueAtCurrentRowColumn = (currentEnteredNumbersCombination: RowColumnEnteredValueTuple[], deadEndEnteredNumbersCombination: RowColumnEnteredValueTuple[], matchingEnteredNumberAtRowAndColumnWithinDeadEndCombinationWithCurrentRowAndColumn: RowColumnEnteredValueTuple) : boolean=> {
     var currentEnteredNumberWithinDeadEndCombination: RowColumnEnteredValueTuple = [0, 0, 0]
     var currentCombinationAndCurrentDeadEndEnteredNumbersCombinationContainSameItemsWithoutIncludingOurMatch: boolean = false 
+    var weAreAtTheCurrentMatchSoLeaveItOut: boolean = false 
     for(var i = 0; i < deadEndEnteredNumbersCombination.length; i++){
         currentEnteredNumberWithinDeadEndCombination = deadEndEnteredNumbersCombination[i]
         if(matchingEnteredNumberAtRowAndColumnWithinDeadEndCombinationWithCurrentRowAndColumn === currentEnteredNumberWithinDeadEndCombination){
+            weAreAtTheCurrentMatchSoLeaveItOut
             continue
         }
-        if(currentEnteredNumbersCombination.includes(currentEnteredNumberWithinDeadEndCombination)) {
+        if(currentEnteredNumbersCombination.includes(currentEnteredNumberWithinDeadEndCombination)) { // We found a bug there might be cases where the element is included in which case it will be set to true but it could be false in which case it is set to false and so the boolean toggles but does not show whether there is a total match or not 
             currentCombinationAndCurrentDeadEndEnteredNumbersCombinationContainSameItemsWithoutIncludingOurMatch = true 
-        } else {
-            currentCombinationAndCurrentDeadEndEnteredNumbersCombinationContainSameItemsWithoutIncludingOurMatch = false 
-            return currentCombinationAndCurrentDeadEndEnteredNumbersCombinationContainSameItemsWithoutIncludingOurMatch
+        } 
+        if(currentCombinationAndCurrentDeadEndEnteredNumbersCombinationContainSameItemsWithoutIncludingOurMatch === false && weAreAtTheCurrentMatchSoLeaveItOut === false){
+            return currentCombinationAndCurrentDeadEndEnteredNumbersCombinationContainSameItemsWithoutIncludingOurMatch //The value here will be false and it must be true at the end of every loop's cycle 
         }
     }
     return currentCombinationAndCurrentDeadEndEnteredNumbersCombinationContainSameItemsWithoutIncludingOurMatch //This value will be true if we reach this step 
