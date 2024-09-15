@@ -81,11 +81,14 @@ const sudokuSolver = (sudokuGrid = []) => {
     while (numberOfBlankSquaresForWhileLoopCounter > 0) {
         backtrackingCounts++;
         console.log("BACKTRACKING START IF THIS IS SHOWN SECOND TIME BACKTRACKING COUNTS NUMBER FOLLOWS SUBTRACT ONE FROM IT", backtrackingCounts);
-        for (var i = currentRow; i < 9; i++) { // We set our index variables to current row and current column since we will update this values and break the loops if performBackTracking is set to true as part of our backtracking process in order to undo combinations try another combination with a different value from a previously added value that we may be removing if we reach a dead end 
-            for (var j = currentColumn; j < 9; j++) { //From the current row and current column variables we will keep iterating through the grid from top to bottom first left to right second 
+        for (var i = 0; i < 9; i++) { // We set our index variables to current row and current column since we will update this values and break the loops if performBackTracking is set to true as part of our backtracking process in order to undo combinations try another combination with a different value from a previously added value that we may be removing if we reach a dead end 
+            for (var j = 0; j < 9; j++) { //From the current row and current column variables we will keep iterating through the grid from top to bottom first left to right second 
                 console.log("SQUARE VISITED START");
                 console.log("CURRENT ROW", i);
                 console.log("CURRENT COLUMN", j);
+                // console.log("\n \n \n")
+                // console.log("CURRENT SUDOKU", sudokuGrid)
+                // console.log("\n \n \n")
                 squaresVisitsCount++;
                 console.log("SQUARES VISITS COUNT", squaresVisitsCount);
                 if (sudokuGrid[i][j] === 0) {
@@ -111,8 +114,7 @@ const sudokuSolver = (sudokuGrid = []) => {
                         console.log("Current entered numbers combination before removing square", currentEnteredNumbersCombination);
                         currentEnteredNumbersCombination = removeSquareValueFromSudokuAndSquareRowColumnAndValueFromCurrentEnteredNumbersCombination(sudokuGrid, currentEnteredNumbersCombination, backtrackingTargetPoint);
                         console.log("Current entered numbers combination after removal", currentEnteredNumbersCombination);
-                        currentRow = backtrackingTargetPoint[0];
-                        currentColumn = backtrackingTargetPoint[1];
+                        //We do not need to update current row and current column to redo the step the step will be redone in the next while loop's iteration because it is behind so when  the grid has been finished                   
                         numberOfBlankSquaresForWhileLoopCounter++;
                         unavailableEnteringNumbersChoices = [];
                         if (backtrackingCounts >= 50) {
@@ -138,8 +140,6 @@ const sudokuSolver = (sudokuGrid = []) => {
                         //We remove our backtrackingTargetPoint value that is the value for our already filled square we are backtracking from from the sudoku grid and replace it with a zero AND we also remove it from currentEnteredNumbersCombination 
                         currentEnteredNumbersCombination = removeSquareValueFromSudokuAndSquareRowColumnAndValueFromCurrentEnteredNumbersCombination(sudokuGrid, currentEnteredNumbersCombination, backtrackingTargetPoint);
                         console.log("Current entered numbers combination after removal", currentEnteredNumbersCombination);
-                        currentRow = backtrackingTargetPoint[0];
-                        currentColumn = backtrackingTargetPoint[1];
                         numberOfBlankSquaresForWhileLoopCounter++;
                         unavailableEnteringNumbersChoices = [];
                         console.log("DEAD END CASE BY REPEATED VALUES END");
@@ -169,7 +169,6 @@ const sudokuSolver = (sudokuGrid = []) => {
                 }
             }
             if (performBacktracking) {
-                console.log("SOMETHING");
                 performBacktracking = false;
                 break;
             }
