@@ -98,12 +98,8 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                         //We remove our backtrackingTargetPoint value that is the value for our already filled square we are backtracking from from the sudoku grid and replace it with a zero AND we also remove it from currentEnteredNumbersCombination 
                         
                         currentEnteredNumbersCombination = removeSquareValueFromSudokuAndSquareRowColumnAndValueFromCurrentEnteredNumbersCombination(sudokuGrid, currentEnteredNumbersCombination, backtrackingTargetPoint)
-                        console.log("CurrentEnteredNumbersCombination has removed a square", currentEnteredNumbersCombination)
-                        console.log("Back tracking target point", backtrackingTargetPoint)
                         currentRow = backtrackingTargetPoint[0]
-                        currentColumn = backtrackingTargetPoint[1]
-                        console.log("Current row after updating", currentRow)
-                        console.log("Current column after updating", currentColumn)                        
+                        currentColumn = backtrackingTargetPoint[1]                       
                         numberOfBlankSquaresForWhileLoopCounter++ 
                         unavailableEnteringNumbersChoices = []
 
@@ -117,13 +113,8 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                         backtrackingTargetPoint = returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockAsARowColumnValueTupleToEmptyItAndRefillIt(i, j, sudokuGrid, currentEnteredNumbersCombination, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
                         //We remove our backtrackingTargetPoint value that is the value for our already filled square we are backtracking from from the sudoku grid and replace it with a zero AND we also remove it from currentEnteredNumbersCombination 
                         currentEnteredNumbersCombination = removeSquareValueFromSudokuAndSquareRowColumnAndValueFromCurrentEnteredNumbersCombination(sudokuGrid, currentEnteredNumbersCombination, backtrackingTargetPoint)
-                        console.log("REPEATED VALUES DEAD END CASE BEGINNING")
-                        console.log("CurrentEnteredNumbersCombination has removed a square", currentEnteredNumbersCombination)
                         currentRow = backtrackingTargetPoint[0]
                         currentColumn = backtrackingTargetPoint[1]
-                        console.log("Current row after updating", currentRow)
-                        console.log("Current column after updating", currentColumn)
-                        console.log("REPEATED VALUES DEAD END CASE END")
 
                         numberOfBlankSquaresForWhileLoopCounter++ 
                         unavailableEnteringNumbersChoices = []
@@ -201,11 +192,9 @@ const removeSquareValueFromSudokuAndSquareRowColumnAndValueFromCurrentEnteredNum
     var newCurrentRow = backtrackingTargetPoint[0]
     var newCurrentColumn = backtrackingTargetPoint[1]
     sudokuGrid[newCurrentRow][newCurrentColumn] = 0 //We make the square blank again in the sudoku 
-    console.log("Before deleting", currentEnteredNumbersCombination)
     currentEnteredNumbersCombination = currentEnteredNumbersCombination.filter((previouslyFilledSquare) => //And remove the square row column value tuple from currentEnteredNumbersCombination 
         previouslyFilledSquare !== backtrackingTargetPoint
     )
-    console.log("Am I deleting?", currentEnteredNumbersCombination)
     return currentEnteredNumbersCombination
 }
 
@@ -275,11 +264,9 @@ const returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockA
     //We return a random value from here. Note if the array length is one since our value for the seed would be zero and we will return the only value there is in the array that is we would obtain index zero 
     if(previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.length > 0) { //If wee are in the second or third case backtrack to a square from previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray
         backtrackingTargetPoint = previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray[Math.floor(Math.random() * previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.length)]
-        console.log("Target point for the repeaated value case or repeated value and dead end case", backtrackingTargetPoint)
         return backtrackingTargetPoint
     } else { //If we find ourselves in the first case (where any number we add to a new array will lead us to a dead end scenario) we backtrack to a square from currentCombination 
         backtrackingTargetPoint = currentEnteredNumbersCombination[Math.floor(Math.random() * currentEnteredNumbersCombination.length)]
-        console.log("Target point for the dead end case with no repeated value case", backtrackingTargetPoint)
         return backtrackingTargetPoint//We know in this case we must have filled squares already in our currentCombination array because we have reached a dead end situation by possible dead end combination resulting from any number typed in a square any possible dead combination must have at least TWO elements so our currentCombination array has at least one element which we can rewrite. Whenver that we reach this flow of execution branch currentCombination will be filled with values
     } //And that is not necessarily the scenario in the other two cases 
 }
