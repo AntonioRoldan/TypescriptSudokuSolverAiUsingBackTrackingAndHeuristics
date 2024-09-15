@@ -183,13 +183,22 @@ const findNumbersWithinRowColumnOrThreeByThreeBlockWhereWeFindOurselves = (unava
     var numbersWithinThreeByThreeBlock: number[] = []
     var rowColumnIndicesFromThreeByThreeBlockWeFindOurselvesAt: Array<RowColumnIndicesFromThreeByThreeSubgridWithinGridTuple> = []
     for(var i = 0; i < 9; i++){
+       if(currentColumn === i) {
+        continue 
+       }
        numbersWithinRow.push(sudokuGrid[currentRow][i])
     }
     for(var i = 0; i < 9; i++){
+        if(currentRow === i){
+            continue 
+        }
         numbersWithinColumn.push(sudokuGrid[i][currentColumn])
     }
     rowColumnIndicesFromThreeByThreeBlockWeFindOurselvesAt = findThreeByThreeIndicesBlockWithinSudokuGridWhereCurrentRowAndCurrentColumnAreAt(currentRow, currentColumn, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
     for(var i = 0; i < rowColumnIndicesFromThreeByThreeBlockWeFindOurselvesAt.length; i++){
+        if(rowColumnIndicesFromThreeByThreeBlockWeFindOurselvesAt[i][0] === currentRow && rowColumnIndicesFromThreeByThreeBlockWeFindOurselvesAt[i][1] === currentColumn){
+            continue 
+        }
         numbersWithinThreeByThreeBlock.push(sudokuGrid[rowColumnIndicesFromThreeByThreeBlockWeFindOurselvesAt[i][0]][rowColumnIndicesFromThreeByThreeBlockWeFindOurselvesAt[i][1]]) //We get the row and column of this square within the three by three block and access the number from the sudoku grid 
     }
     unavailableEnteringNumbersChoices = addUnavailableEnteringNumbersChoicesFromGivenPoolToUnavailableEnteringNumbersChoices(unavailableEnteringNumbersChoices, numbersWithinRow)
