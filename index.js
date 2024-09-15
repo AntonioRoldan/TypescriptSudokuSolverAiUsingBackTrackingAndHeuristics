@@ -222,8 +222,11 @@ const findThreeByThreeIndicesBlockWithinSudokuGridWhereCurrentRowAndCurrentColum
             }
         }
         if (threeByThreeBlockWithinSudokuGridWhereCurrentRowAndColumnAreWasFound) {
-            break; //We break after we have added all indices from the current 3x3 box which HAPPENS TO BE the box where current row and column are because we have set our boolean and now we have the indicesFromThreeByThreeBlockWeFindOurselvesAt array with the indices belonging to our 3x3 block
-        } //that will help us accessing the values from the array so we can fill our temporary rowColumnEnteredValue tuple and check if it is within the currentCombination array 
+            break; //We break after we have added all indices from the current 3x3 box which HAPPENS TO BE the box where current row and column are because we have set our boolean and now we have the indicesFromThreeByThreeBlockWeFindOurselvesAt array with the indices belonging to the 3x3 block we are at 
+        }
+        else {
+            indicesFromThreeByThreeBlockWeFindOurselvesAt = []; //We clear our current block array for the next iteration
+        }
     }
     return indicesFromThreeByThreeBlockWeFindOurselvesAt;
 };
