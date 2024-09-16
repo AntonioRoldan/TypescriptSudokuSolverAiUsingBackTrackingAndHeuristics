@@ -425,7 +425,9 @@ const checkIfCurrentEnteredNumbersCombinationCouldBecomeADeadEndCombinationIfWeA
         }
         if(currentEnteredNumbersCombination.includes(currentEnteredNumberWithinDeadEndCombination)) { // We found a bug there might be cases where the element is included in which case it will be set to true but it could be false in which case it is set to false and so the boolean toggles but does not show whether there is a total match or not 
             currentCombinationAndCurrentDeadEndEnteredNumbersCombinationContainSameItemsWithoutIncludingOurMatch = true 
-        } 
+        } else {
+            currentCombinationAndCurrentDeadEndEnteredNumbersCombinationContainSameItemsWithoutIncludingOurMatch = false
+        }
         if(currentCombinationAndCurrentDeadEndEnteredNumbersCombinationContainSameItemsWithoutIncludingOurMatch === false && weAreAtTheCurrentMatchSoLeaveItOut === false){
             return currentCombinationAndCurrentDeadEndEnteredNumbersCombinationContainSameItemsWithoutIncludingOurMatch //The value here will be false and it must be true at the end of every loop's cycle 
         }
