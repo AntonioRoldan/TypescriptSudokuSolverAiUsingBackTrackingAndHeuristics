@@ -1,6 +1,5 @@
 import {Grid, ThreeByThreeBlockIndicesFromGrid, ThreeByThreeBlockWeFindOurselvesAt, RowColumnIndicesFromThreeByThreeSubgridWithinGridTuple, RowColumnEnteredValueTuple} from "./util/types"
 //SUDOKU SOLVER IN TYPESCRIPT USING BACKTRACKING 
-const { generateSudoku } = require("sudoku-puzzle")
 
 const sudokuSolver = (sudokuGrid: Grid = []) => {
     
@@ -446,7 +445,9 @@ var sudoku = [[0, 0, 9, 0, 1, 0, 0, 3, 0],
 [8, 0, 2, 3, 0, 6, 0, 7, 5],
 [0, 5, 0, 2, 0, 4, 0, 1, 6]]
 
-var generatedSudoku = generateSudoku(9, 3) //first argument is board dimension second argument difficulty from one to five 
-console.log(sudokuSolver(generateSudoku(9, 3)))
+var sudokuPuzzle = JSON.parse(JSON.stringify(sudoku))
+
+console.log("Solution", sudokuSolver(sudoku))
+console.log("Original sudoku puzzle", sudokuPuzzle)
 
  
