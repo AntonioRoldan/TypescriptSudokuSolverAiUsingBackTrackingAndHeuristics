@@ -88,6 +88,8 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
     var pastSudokus: Grid[] = []
     var squaresVisitsCount = 0
     numberOfBlankSquaresForWhileLoopCounter  = findBlankSquaresAmountCounterForMainWhileLoop(sudokuGrid)
+    var blankSquaresAtStart = numberOfBlankSquaresForWhileLoopCounter
+    
     while(numberOfBlankSquaresForWhileLoopCounter > 0){
         backtrackingCounts++
         console.log("BACKTRACKING START IF THIS IS SHOWN SECOND TIME BACKTRACKING COUNTS NUMBER FOLLOWS SUBTRACT ONE FROM IT", backtrackingCounts)
@@ -127,10 +129,9 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                         //We do not need to update current row and current column to redo the step the step will be redone in the next while loop's iteration because it is behind so when  the grid has been finished                   
                         numberOfBlankSquaresForWhileLoopCounter++ 
                         unavailableEnteringNumbersChoices = []
-                        if(backtrackingCounts >= 50) {
-                            console.log(unavailableEnteringNumbersChoices)
-                            break
-                        }
+                        // console.log("PRINTING DEAD END COMBINATIONS BEGINNING")
+                        // console.log(deadEndEnteredNumbersCombinations)
+                        // console.log("PRINTING DEAD END COMBINATIONS END")
                         console.log("DEAD END CASE BY DEAD END COMBINATION END") 
                         console.log("SQUARE ATTEMPTED END DUE TO DEAD END BY COMBINATION")
                         break 
@@ -145,6 +146,7 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                     console.log("CHECKING UNAVAILABLE NUMBERS FROM REPEATED VALUES END")
                     if(unavailableEnteringNumbersChoices.length === 9) {
                         console.log("DEAD END CASE BY REPEATED VALUES BEGINNING") 
+                        if(deadEndEnteredNumbersCombinations.includes(currentEnteredNumbersCombination)) {console.log("Repeating forbidden combination")}
                         deadEndEnteredNumbersCombinations.push([currentEnteredNumbersCombination].flat(1) as unknown as RowColumnEnteredValueTuple[])
                         performBacktracking = true 
                         //Next we go to a previously filled square within our same column, row or 3x3 block within the grid AND remove that element to enter a new one we update the currentColumn and currentRow values remove the value both from the sudoku and current combination and use it to uodate currentRow and currentColumn increase the blank square counter for our while loop and break the nested for loop 
@@ -156,6 +158,9 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                         console.log("Current entered numbers combination after removal", currentEnteredNumbersCombination)
                         numberOfBlankSquaresForWhileLoopCounter++ 
                         unavailableEnteringNumbersChoices = []
+                        // console.log("PRINTING DEAD END COMBINATIONS BEGINNING")
+                        // console.log(deadEndEnteredNumbersCombinations)
+                        // console.log("PRINTING DEAD END COMBINATIONS END")
                         console.log("DEAD END CASE BY REPEATED VALUES END") 
                         console.log("SQUARE ATTEMPTED END DUE TO DEAD END BY REPEATED VALUES")
                         break 
@@ -174,8 +179,9 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                     newNumberToBeAdded = numbersThatWeCanEnterIntoThisBlankSquare[Math.floor(Math.random() * numbersThatWeCanEnterIntoThisBlankSquare.length)] // We add the new number to our sudoku which is a random number from the numbers we can enter
                     sudokuGrid[i][j] = newNumberToBeAdded 
                     currentEnteredNumbersCombination.push([i, j, newNumberToBeAdded] as RowColumnEnteredValueTuple)
+                    //La primera vez no está el past sudoku la segunda si y solo se hace esto al añadir un nuevo numbero esta claro que se repiten combinaciones
                     if(pastSudokus.includes(sudokuGrid)){ //Checking if program adds a value twice on the same square first we add the number then we run the check then we push becuase at the next iteration we are comparing against a pastly entered value
-                        console.log("Sudoku repeating", sudokuGrid)
+                        console.log("Sudoku repeating", sudokuGrid) //It should enter a new number at every moment so this should not be happening 
                     }
                     pastSudokus.push(sudokuGrid) //We know the first time it won't be repeated if we checked after we add it would be absurd but if check above is true that means we added  the number already because we are not pushing a second time 
                     numbersThatWeCanEnterIntoThisBlankSquare = []
@@ -336,13 +342,13 @@ const returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockA
     }
     previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray = [... new Set(previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray)] // We make it unique since we may have row or column values within our 3x3 block that alter the randomness of our choice 
     //We return a random value from here. Note if the array length is one since our value for the seed would be zero and we will return the only value there is in the array that is we would obtain index zero 
-    if(previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.length > 0) { //If wee are in the second or third case backtrack to a square from previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray
-        backtrackingTargetPoint = previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray[Math.floor(Math.random() * previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.length)]
-        return backtrackingTargetPoint
-    } else { //If we find ourselves in the first case (where any number we add to a new array will lead us to a dead end scenario) we backtrack to a square from currentCombination 
+    // if(previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.length > 0) { //If wee are in the second or third case backtrack to a square from previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray
+    //     backtrackingTargetPoint = previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray[Math.floor(Math.random() * previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.length)]
+    //     return backtrackingTargetPoint
+    // } else { //If we find ourselves in the first case (where any number we add to a new array will lead us to a dead end scenario) we backtrack to a square from currentCombination 
         backtrackingTargetPoint = currentEnteredNumbersCombination[Math.floor(Math.random() * currentEnteredNumbersCombination.length)]
         return backtrackingTargetPoint//We know in this case we must have filled squares already in our currentCombination array because we have reached a dead end situation by possible dead end combination resulting from any number typed in a square any possible dead combination must have at least TWO elements so our currentCombination array has at least one element which we can rewrite. Whenver that we reach this flow of execution branch currentCombination will be filled with values
-    } //And that is not necessarily the scenario in the other two cases 
+    // } //And that is not necessarily the scenario in the other two cases 
 }
 
 
@@ -430,13 +436,13 @@ const checkIfCurrentEnteredNumbersCombinationCouldBecomeADeadEndCombinationIfWeA
 
 //End of first part of the algorithm as explained in the top comment 
 
-console.log(sudokuSolver([ [0, 0, 0, 9, 0, 0, 0, 0, 0], 
-    [0, 0, 0, 0, 3, 0, 0, 0, 1],
-    [3, 7, 4, 0, 0, 0, 0, 8, 2],
-    [4, 9, 0, 2, 8, 0, 0, 0, 0],
-    [0, 1, 0, 0, 7, 0, 0, 6, 9],
-    [7, 0, 0, 0, 1, 0, 2, 0, 0],
-    [0, 0, 0, 0, 0, 5, 0, 1, 3],
-    [5, 0, 1, 0, 9, 0, 0, 0, 7],
-    [0, 2, 0, 3, 6, 0, 0, 0, 4] ]))
+console.log(sudokuSolver([ [0, 0, 9, 0, 1, 0, 0, 3, 0], 
+    [0, 0, 0, 7, 6, 0, 0, 0, 9],
+    [0, 7, 3, 0, 0, 8, 0, 5, 0],
+    [7, 2, 0, 0, 0, 9, 1, 0, 0],
+    [9, 0, 6, 8, 3, 0, 5, 0, 0],
+    [0, 0, 5, 0, 0, 2, 0, 9, 0],
+    [6, 9, 4, 0, 5, 0, 3, 0, 0],
+    [8, 0, 2, 3, 0, 6, 0, 7, 5],
+    [0, 5, 0, 2, 0, 4, 0, 1, 6] ]))
 
