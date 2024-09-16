@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 //SUDOKU SOLVER IN TYPESCRIPT USING BACKTRACKING 
+const { generateSudoku } = require("sudoku-puzzle");
 const sudokuSolver = (sudokuGrid = []) => {
     //Data structures : 
     //threeByThreeGridsRowsAndColumnIndexesWithinSudokuGrid: Multidimensional array containing an array for each 3x3 block found in our 9x9 grid which in turns contains its elements' row and column indexex WITHIN our 9x9 array listed row by row from top to bottom
@@ -421,7 +422,7 @@ const checkIfCurrentEnteredNumbersCombinationCouldBecomeADeadEndCombinationIfWeA
     return currentCombinationAndCurrentDeadEndEnteredNumbersCombinationContainSameItemsWithoutIncludingOurMatch; //This value will be true if we reach this step 
 };
 //End of first part of the algorithm as explained in the top comment 
-console.log(sudokuSolver([[0, 0, 9, 0, 1, 0, 0, 3, 0],
+var sudoku = [[0, 0, 9, 0, 1, 0, 0, 3, 0],
     [0, 0, 0, 7, 6, 0, 0, 0, 9],
     [0, 7, 3, 0, 0, 8, 0, 5, 0],
     [7, 2, 0, 0, 0, 9, 1, 0, 0],
@@ -429,4 +430,6 @@ console.log(sudokuSolver([[0, 0, 9, 0, 1, 0, 0, 3, 0],
     [0, 0, 5, 0, 0, 2, 0, 9, 0],
     [6, 9, 4, 0, 5, 0, 3, 0, 0],
     [8, 0, 2, 3, 0, 6, 0, 7, 5],
-    [0, 5, 0, 2, 0, 4, 0, 1, 6]]));
+    [0, 5, 0, 2, 0, 4, 0, 1, 6]];
+var generatedSudoku = generateSudoku(9, 3); //first argument is board dimension second argument difficulty from one to five 
+console.log(sudokuSolver(generateSudoku(9, 3)));
