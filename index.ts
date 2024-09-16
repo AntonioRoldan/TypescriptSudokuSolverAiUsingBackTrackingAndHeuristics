@@ -342,13 +342,13 @@ const returnRandomPreviouslyFilledSquareWithinCurrentSquaresRowColumnOr3x3BlockA
     }
     previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray = [... new Set(previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray)] // We make it unique since we may have row or column values within our 3x3 block that alter the randomness of our choice 
     //We return a random value from here. Note if the array length is one since our value for the seed would be zero and we will return the only value there is in the array that is we would obtain index zero 
-    // if(previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.length > 0) { //If wee are in the second or third case backtrack to a square from previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray
-    //     backtrackingTargetPoint = previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray[Math.floor(Math.random() * previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.length)]
-    //     return backtrackingTargetPoint
-    // } else { //If we find ourselves in the first case (where any number we add to a new array will lead us to a dead end scenario) we backtrack to a square from currentCombination 
+    if(previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.length > 0) { //If wee are in the second or third case backtrack to a square from previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray
+        backtrackingTargetPoint = previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray[Math.floor(Math.random() * previouslyFilledSquaresWithinCurrentSquareRowColumnOr3x3BlockArray.length)]
+        return backtrackingTargetPoint
+    } else { //If we find ourselves in the first case (where any number we add to a new array will lead us to a dead end scenario) we backtrack to a square from currentCombination 
         backtrackingTargetPoint = currentEnteredNumbersCombination[Math.floor(Math.random() * currentEnteredNumbersCombination.length)]
         return backtrackingTargetPoint//We know in this case we must have filled squares already in our currentCombination array because we have reached a dead end situation by possible dead end combination resulting from any number typed in a square any possible dead combination must have at least TWO elements so our currentCombination array has at least one element which we can rewrite. Whenver that we reach this flow of execution branch currentCombination will be filled with values
-    // } //And that is not necessarily the scenario in the other two cases 
+    } //And that is not necessarily the scenario in the other two cases 
 }
 
 
@@ -446,3 +446,4 @@ console.log(sudokuSolver([ [0, 0, 9, 0, 1, 0, 0, 3, 0],
     [8, 0, 2, 3, 0, 6, 0, 7, 5],
     [0, 5, 0, 2, 0, 4, 0, 1, 6] ]))
 
+ 
