@@ -435,7 +435,7 @@ const checkIfCurrentEnteredNumbersCombinationCouldBecomeADeadEndCombinationIfWeA
 
 //End of first part of the algorithm as explained in the top comment 
 
-var sudoku = [[0, 0, 9, 0, 1, 0, 0, 3, 0], 
+var sudoku = [[0, 0, 9, 0, 1, 0, 0, 3, 0], //Easy sudokku 
 [0, 0, 0, 7, 6, 0, 0, 0, 9],
 [0, 7, 3, 0, 0, 8, 0, 5, 0],
 [7, 2, 0, 0, 0, 9, 1, 0, 0],
@@ -444,6 +444,16 @@ var sudoku = [[0, 0, 9, 0, 1, 0, 0, 3, 0],
 [6, 9, 4, 0, 5, 0, 3, 0, 0],
 [8, 0, 2, 3, 0, 6, 0, 7, 5],
 [0, 5, 0, 2, 0, 4, 0, 1, 6]]
+
+// var sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku 
+// [2, 5, 0, 0, 0, 4, 0, 0, 1],
+// [0, 1, 0, 0, 0, 0, 5, 4, 9],
+// [5, 0, 1, 3, 0, 7, 0, 0, 0],
+// [0, 7, 0, 0, 0, 0, 0, 1, 5],
+// [4, 2, 0, 1, 0, 8, 0, 0, 0],
+// [0, 0, 0, 0, 0, 0, 0, 9, 6],
+// [8, 0, 0, 0, 6, 9, 0, 0, 7],
+// [1, 0, 0, 0, 0, 0, 2, 8, 0]]
 
 var sudokuPuzzle = JSON.parse(JSON.stringify(sudoku))
 
