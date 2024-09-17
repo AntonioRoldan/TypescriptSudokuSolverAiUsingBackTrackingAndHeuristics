@@ -10,24 +10,25 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
     //array as a length three tuple with row column and value in this order).
     //If it cannot enter any valid number at a square it adds the current combination of entered numbers to an array containing dead end combinations and undoes one random already 
     //taken step or square from currentEnteredNumbersCombination there are two ways in which the number is picked which will be explainsed further below 
-    //(by removing it from the sudoku and current combination once we find it and storing it in the backtracking target point variable) and iterates the grid from the beginning again.
+    //(this is why we are using the backtracking target point variable this variable is our chosen step to be undone) and iterates the grid from the beginning again.
 
-    //The algorithm also checks that the current combination of entered numbers it keeps track of does not coincide with a previously found invalid combination of entered numbers 
-    //if we add a new number or numbers from our 1-9 choices. What we are doing is we are checkking what entering numbers at the current blank square give us a dead end combination at this specific square to not repeat ourselves. 
+    //The algorithm checks that the current combination of entered numbers it keeps track of does not coincide with a previously found invalid combination of entered numbers 
+    //if we add a new number or numbers from our 1-9 choices. What we are doing is we are checking what entering numbers at the current blank square give us a dead end combination at this specific square to not repeat ourselves. 
 
     //If they give us a dead end combination they are declared invalid and as such added to invalidEnteringNumbersChoices
-    //So we keep track of invalid combinations by adding them to a data structure whenever we find a dead end (square with no valid numbers to be entered) 
+    //We keep track of invalid combinations by adding them to a data structure whenever we find a dead end (square with no valid numbers to be entered) this data structure is deadEndEnteredNumbersCombinations.
     //This all happens within a while loop that uses a condition checking that the number of blank squares is greatesr than zero for it to keep running.
 
     //As we add elements we decrease this variable and if we remove them we decrease it.
     //So there are two kinds of invalid numbers the ones that lead to already found dead end combinations and those which can be found in the same row, column or 3x3 grid as the blank row and column we find ourselves at
     //We check for both conditions and after each check fill the invalidEnteringNumbersChoices array based on them. And after filling the array we check
     
-    //If we run out of valid numbers to enter at that specific square (in which case invalidEnteringNumbersChoices.length is nine because we make it unique and 
-    //can only add numbers from one to nine) we backtrack if not we add a new number using the array to know what numbers we can add by comparing it to possible numbers choices if we run out of valid numbers 
-    //We add the currentEnteredNumbersCombination to the dead end combinations array and pick a random pastly entered number from our same column row or
+    //if we run out of valid numbers to enter at that specific square (in which case invalidEnteringNumbersChoices.length is nine because we make it unique and 
+    //can only add numbers from one to nine) we backtrack.
+    //If not we add a new number using the array to know what numbers we can add by comparing it to possible numbers choices. If we run out of valid numbers 
+    //we add the currentEnteredNumbersCombination to the dead end combinations array and pick a random pastly entered number from our same column row or
     // 3x3 grid OR any pastly entered number it depends on whether we reached a dead end because of possible dead end combinations we may reach adding any number
-    // from our 1-9 choices OR if it is due to repeated values. 
+    // from our 1-9 choices OR if it is due to repeated values these are the two different strategies used depending on the situation although I suspect they are equivalent.
     
     //We take the number that we picked and remove it from the sudoku and its row column value tuple from currentEnteredNumbersCombination we subtract the loop's conditional variable. 
     //And then the inner grid iterating for loop is broken if no valid numbers are found and an extra boolean variable is set to break the outer for loop and iterate through the grid again in the next while loops iteration
