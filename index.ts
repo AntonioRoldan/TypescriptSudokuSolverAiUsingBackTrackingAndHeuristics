@@ -7,22 +7,29 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
 
     //The algorithm tries to add a valid (not repeated in the same column, row and 3x3 block within the grid) number to each blank cell as it iterates 
     //through the grid while keeping track of the combination of numbers that have been entered in the grid (these are stored in the currentCombination array as a length three tuple with row column and value in this order).
-    //If it cannot enter any valid number at a square it adds the current combination of entered numbers to an array containing dead end combinations and undoes one already 
-    //taken step or square from currentEnteredNumbersCombination (by removing it from the sudoku and current combination once we find it and storing it in the backtracking target point variable) and iterates the grid from the beginning again.
+    //If it cannot enter any valid number at a square it adds the current combination of entered numbers to an array containing dead end combinations and undoes one random already 
+    //taken step or square from currentEnteredNumbersCombination there are two ways in which the number is picked which will be explanied further below 
+    //(by removing it from the sudoku and current combination once we find it and storing it in the backtracking target point variable) and iterates the grid from the beginning again.
+
     //The algorithm also checks that the current combination of entered numbers it keeps track of does not coincide with a previously found invalid combination of entered numbers 
     //if we add a number or numbers. What we are doing is we are checkking what entering numbers give us a dead end combination at this specific square to not repeat ourselves. 
+
     //If they give us a dead end combination they are declared invalid and as such added to invalidEnteringNumbersChoices
     //So we keep track of invalid combinations by adding them to a data structure whenever we find a dead end (square with no valid numbers to be entered) 
     //This all happens within a while loop that uses a condition checking that the number of blank squares is greatesr than zero for it to keep running.
+
     //As we add elements we decrease this variable and if we remove them we decrease it.
     //So there are two kinds of invalid numbers the ones that lead to already found dead end combinations and those which can be found in the same row, column or 3x3 grid as the blank row and column we find ourselves at
     //We check for both conditions and after each check fill the invalidEnteringNumbersChoices array based on them. And after filling the array we check
-    // if we run out of valid numbers to enter at that specific square (in which case invalidEnteringNumbersChoices.length is one becue we make it unique and 
+    
+    //If we run out of valid numbers to enter at that specific square (in which case invalidEnteringNumbersChoices.length is nine because we make it unique and 
     //can only add numbers from one to nine) we backtrack if not we add a new number using the array to know what numbers we can add by comparing it to possible numbers choices if we run out of valid numbers 
     //We add the currentEnteredNumbersCombination to the dead end combinations array and pick a random pastly entered number from our same column row or
-    // 3x3 grid OR any pastly number it depends on whether we reached a dead end because of possible dead end combinations we may reach adding any number
-    // from our choices OR if it is due to repeated values. We take the number that we picked and remove it from the sudoku and its row column value tuple from currentEnteredNumbersCombination we subtract the loop's conditional variable. 
-    //And then the inner grid iterating for loop is broken if no valid numbers are found and an extra boolean variable is set to break the outer for loop and iterate through the grid again 
+    // 3x3 grid OR any pastly entered number it depends on whether we reached a dead end because of possible dead end combinations we may reach adding any number
+    // from our 1-9 choices OR if it is due to repeated values. 
+    
+    //We take the number that we picked and remove it from the sudoku and its row column value tuple from currentEnteredNumbersCombination we subtract the loop's conditional variable. 
+    //And then the inner grid iterating for loop is broken if no valid numbers are found and an extra boolean variable is set to break the outer for loop and iterate through the grid again in the next while loops iteration
     //If on the contrary there are valid numbers we add a random number from that set to our square in the sudoku grid 2D array and add a new tuple to the currentEnteredNumbersCombination data structure 
     
     //Note the program backtracks to a previously filled square within the same column row or 3x3 grid of no invalid numbers 
@@ -32,7 +39,7 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
     //within each 3x3 block wiithin the 9x9 sudokku grid (this variable is called rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
     //It iterates through this array keeping track of the square we find ourselves at and compare the row column values with each row column pair within each block and if there is a match it knows what block it is in then by storing that block it uses the indices to extract the values from the 9x9 grid 
     //TODO: REFACTOR CODE 
-    
+
     var numberOfBlankSquaresForWhileLoopCounter: number = 0
     var backtrackingTargetPoint: RowColumnEnteredValueTuple = [0, 0, 0] //The square we are emptying to refill it with a new valid value that gets us out of the dead end 
     var possibleNumberChoices: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9] //The algorithm will iterate through this numbers after filling the unavailableNumbers array if the number is not found in the unavailableNumbers array- The algorithm will fill the blank with that number 
