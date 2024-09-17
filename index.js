@@ -9,7 +9,7 @@ const sudokuSolver = (sudokuGrid = []) => {
     //So we keep track of invalid combinations by adding them to a data structure whenever we find a dead end (square with no valid numbers to be entered) 
     //This all happens within a while loop that uses a condition checking that the number of blank squares is greatesr than zero for it to keep running.
     //As we add elements we decrease this variable and if we remove them we decrease it.
-    //So there are two kinds of invalid numbers the ones that lead to dead end combinations and those which can be found in the same row, column or 3x3 grid as the blank row and column we find ourselves at
+    //So there are two kinds of invalid numbers the ones that lead to already found dead end combinations and those which can be found in the same row, column or 3x3 grid as the blank row and column we find ourselves at
     //We check for both conditions after the other. After checking each condition we check if we have run out of valid numbers (unavailableEnteringNumbers is equal to 9) we do this twice for each invalid number finding case that we mention in the comment line right above 
     //The inner grid iterating for loop is broken if no valid numbers are found and an extra boolean variable is set to break the outer for loop and iterate through the grid again 
     //If on the contrary there are valid numbers we add a random number from that set to our square in the sudoku grid 2D array and add a new tuple to the currentEnteredNumbersCombination data structure 
@@ -78,11 +78,11 @@ const sudokuSolver = (sudokuGrid = []) => {
                 console.log("CURRENT ROW", i);
                 console.log("CURRENT COLUMN", j);
                 console.log("\n \n \n");
-                console.log("CURRENT SUDOKU", sudokuGrid);
                 console.log("\n \n \n");
                 squaresVisitsCount++;
                 console.log("SQUARES VISITS COUNT", squaresVisitsCount);
                 if (sudokuGrid[i][j] === 0) {
+                    console.log("CURRENT SUDOKU", sudokuGrid);
                     console.log("SQUARE ATTEMPTED BEGGINING ");
                     console.log("Blank square row", i);
                     console.log("Blank square column", j);
@@ -435,5 +435,14 @@ var sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku
     [8, 0, 0, 0, 6, 9, 0, 0, 7],
     [1, 0, 0, 0, 0, 0, 2, 8, 0]];
 var sudokuPuzzle = JSON.parse(JSON.stringify(sudoku));
+var sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku 
+    [2, 5, 0, 0, 0, 4, 0, 0, 1],
+    [0, 1, 0, 0, 0, 0, 5, 4, 9],
+    [5, 0, 1, 3, 0, 7, 0, 0, 0],
+    [0, 7, 0, 0, 0, 0, 0, 1, 5],
+    [4, 2, 0, 1, 0, 8, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 9, 6],
+    [8, 0, 0, 0, 6, 9, 0, 0, 7],
+    [1, 0, 0, 0, 0, 0, 2, 8, 0]];
 console.log("Solution", sudokuSolver(sudoku));
 console.log("Original sudoku puzzle", sudokuPuzzle);
