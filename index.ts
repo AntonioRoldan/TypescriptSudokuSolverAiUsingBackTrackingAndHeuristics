@@ -443,7 +443,7 @@ var sudoku = [[0, 0, 9, 0, 1, 0, 0, 3, 0], //Easy sudokku
 [8, 0, 2, 3, 0, 6, 0, 7, 5],
 [0, 5, 0, 2, 0, 4, 0, 1, 6]]
 
-var sudoku = [[3, 7, 0, 0, 6, 2, 0, 0, 0], //Easy sudokku 
+ sudoku = [[3, 7, 0, 0, 6, 2, 0, 0, 0], //Easy sudokku 
 [0, 2, 9, 1, 0, 0, 7, 0, 0],
 [5, 0, 1, 0, 0, 0, 9, 2, 8],
 [8, 0, 0, 4, 9, 6, 1, 0, 7],
@@ -453,7 +453,7 @@ var sudoku = [[3, 7, 0, 0, 6, 2, 0, 0, 0], //Easy sudokku
 [0, 0, 0, 0, 0, 0, 0, 3, 0],
 [6, 1, 0, 0, 2, 0, 5, 4, 0]]
 
-var sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku 
+ sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku 
 [2, 5, 0, 0, 0, 4, 0, 0, 1],
 [0, 1, 0, 0, 0, 0, 5, 4, 9],
 [5, 0, 1, 3, 0, 7, 0, 0, 0],
@@ -464,7 +464,7 @@ var sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku
 [1, 0, 0, 0, 0, 0, 2, 8, 0]]
 
 var sudokuPuzzle = JSON.parse(JSON.stringify(sudoku))
-var sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku 
+sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku 
 [2, 5, 0, 0, 0, 4, 0, 0, 1],
 [0, 1, 0, 0, 0, 0, 5, 4, 9],
 [5, 0, 1, 3, 0, 7, 0, 0, 0],
@@ -473,6 +473,7 @@ var sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku
 [0, 0, 0, 0, 0, 0, 0, 9, 6],
 [8, 0, 0, 0, 6, 9, 0, 0, 7],
 [1, 0, 0, 0, 0, 0, 2, 8, 0]]
+
 console.log("Solution", sudokuSolver(sudoku))
 console.log("Original sudoku puzzle", sudokuPuzzle)
 
