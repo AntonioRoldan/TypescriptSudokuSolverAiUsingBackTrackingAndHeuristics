@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 //SUDOKU SOLVER IN TYPESCRIPT USING BACKTRACKING 
 const sudokuSolver = (sudokuGrid = []) => {
     // Algorithm behavior: 
-    //The algorithm tries to add a valid (not repeated in the same column, row and 3x3 block within the grid) number to each blank cell as it iterates through the grid while keeping track of what numbers were entered in what row and column in the grid (these are stored in the currentCombination array as a length three tuple with row column and value in this order).
-    //If it cannot enter any valid number at a square it adds the current combination of entered numbers to an array containing dead end combinations and undoes one already taken step or square from currentEnteredNumbersCombination (by removing it from the sudoku and current combination once we find it which is the backtracking target point variable) and iterates the grid from the beginning again.
+    //The algorithm tries to add a valid (not repeated in the same column, row and 3x3 block within the grid) number to each blank cell as it iterates through the grid while keeping track of the combination of numbers that have been entered in the grid (these are stored in the currentCombination array as a length three tuple with row column and value in this order).
+    //If it cannot enter any valid number at a square it adds the current combination of entered numbers to an array containing dead end combinations and undoes one already taken step or square from currentEnteredNumbersCombination (by removing it from the sudoku and current combination once we find it and storing it in the backtracking target point variable) and iterates the grid from the beginning again.
     //The algorithm also checks that the current combination of entered numbers it keeps track of does not coincide with a previously found invalid combination of entered numbers if we add a number from a given set of numbers (the ones that may lead to a dead end current combination) that are determined as invalid. 
     //So we keep track of invalid combinations by adding them to a data structure whenever we find a dead end (square with no valid numbers to be entered) 
     //This all happens within a while loop that uses a condition checking that the number of blank squares is greatesr than zero for it to keep running.
@@ -425,15 +425,15 @@ var sudoku = [[3, 7, 0, 0, 6, 2, 0, 0, 0], //Easy sudokku
     [9, 8, 4, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 3, 0],
     [6, 1, 0, 0, 2, 0, 5, 4, 0]];
-// var sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku 
-// [2, 5, 0, 0, 0, 4, 0, 0, 1],
-// [0, 1, 0, 0, 0, 0, 5, 4, 9],
-// [5, 0, 1, 3, 0, 7, 0, 0, 0],
-// [0, 7, 0, 0, 0, 0, 0, 1, 5],
-// [4, 2, 0, 1, 0, 8, 0, 0, 0],
-// [0, 0, 0, 0, 0, 0, 0, 9, 6],
-// [8, 0, 0, 0, 6, 9, 0, 0, 7],
-// [1, 0, 0, 0, 0, 0, 2, 8, 0]]
+var sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku 
+    [2, 5, 0, 0, 0, 4, 0, 0, 1],
+    [0, 1, 0, 0, 0, 0, 5, 4, 9],
+    [5, 0, 1, 3, 0, 7, 0, 0, 0],
+    [0, 7, 0, 0, 0, 0, 0, 1, 5],
+    [4, 2, 0, 1, 0, 8, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 9, 6],
+    [8, 0, 0, 0, 6, 9, 0, 0, 7],
+    [1, 0, 0, 0, 0, 0, 2, 8, 0]];
 var sudokuPuzzle = JSON.parse(JSON.stringify(sudoku));
 console.log("Solution", sudokuSolver(sudoku));
 console.log("Original sudoku puzzle", sudokuPuzzle);
