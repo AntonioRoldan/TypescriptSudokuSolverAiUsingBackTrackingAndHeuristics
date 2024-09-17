@@ -6,13 +6,14 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
     // Algorithm behavior: 
 
     //The algorithm tries to add a valid (not repeated in the same column, row and 3x3 block within the grid) number to each blank cell as it iterates 
-    //through the grid while keeping track of the combination of numbers that have been entered in the grid (these are stored in the currentCombination array as a length three tuple with row column and value in this order).
+    //through the grid while keeping track of the combination of numbers that have been entered in the grid to make the current entered numbers combination (these are stored in the currentCombination 
+    //array as a length three tuple with row column and value in this order).
     //If it cannot enter any valid number at a square it adds the current combination of entered numbers to an array containing dead end combinations and undoes one random already 
-    //taken step or square from currentEnteredNumbersCombination there are two ways in which the number is picked which will be explanied further below 
+    //taken step or square from currentEnteredNumbersCombination there are two ways in which the number is picked which will be explainsed further below 
     //(by removing it from the sudoku and current combination once we find it and storing it in the backtracking target point variable) and iterates the grid from the beginning again.
 
     //The algorithm also checks that the current combination of entered numbers it keeps track of does not coincide with a previously found invalid combination of entered numbers 
-    //if we add a number or numbers. What we are doing is we are checkking what entering numbers give us a dead end combination at this specific square to not repeat ourselves. 
+    //if we add a new number or numbers from our 1-9 choices. What we are doing is we are checkking what entering numbers at the current blank square give us a dead end combination at this specific square to not repeat ourselves. 
 
     //If they give us a dead end combination they are declared invalid and as such added to invalidEnteringNumbersChoices
     //So we keep track of invalid combinations by adding them to a data structure whenever we find a dead end (square with no valid numbers to be entered) 
@@ -37,7 +38,8 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
 
     //Note: The algorithm checks for numbers within the same 3x3 row by using an extra array containing the row column indices contained 
     //within each 3x3 block wiithin the 9x9 sudokku grid (this variable is called rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
-    //It iterates through this array keeping track of the square we find ourselves at and compare the row column values with each row column pair within each block and if there is a match it knows what block it is in then by storing that block it uses the indices to extract the values from the 9x9 grid 
+    //It iterates through this array keeping track of the square we find ourselves at and compare the row column values with each row column pair 
+    // within each block and if there is a match it knows what block it is in then by storing that block it uses the indices to extract the values from the 9x9 grid 
     //TODO: REFACTOR CODE 
 
     var numberOfBlankSquaresForWhileLoopCounter: number = 0
