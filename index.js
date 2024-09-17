@@ -159,10 +159,6 @@ const sudokuSolver = (sudokuGrid = []) => {
                     sudokuGrid[i][j] = newNumberToBeAdded;
                     currentEnteredNumbersCombination.push([i, j, newNumberToBeAdded]);
                     //La primera vez no está el past sudoku la segunda si y solo se hace esto al añadir un nuevo numbero esta claro que se repiten combinaciones
-                    if (pastSudokus.includes(sudokuGrid)) { //Checking if program adds a value twice on the same square first we add the number then we run the check then we push becuase at the next iteration we are comparing against a pastly entered value
-                        console.log("Sudoku repeating", sudokuGrid); //It should enter a new number at every moment so this should not be happening 
-                    }
-                    pastSudokus.push(sudokuGrid); //We know the first time it won't be repeated if we checked after we add it would be absurd but if check above is true that means we added  the number already because we are not pushing a second time 
                     numbersThatWeCanEnterIntoThisBlankSquare = [];
                     unavailableEnteringNumbersChoices = [];
                     numberOfBlankSquaresForWhileLoopCounter -= 1;
