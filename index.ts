@@ -5,28 +5,39 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
     
     // Algorithm behavior: 
 
-    //The algorithm tries to add a valid (not repeated in the same column, row and 3x3 block within the grid) number to each blank cell as it iterates through the grid while keeping track of the combination of numbers that have been entered in the grid (these are stored in the currentCombination array as a length three tuple with row column and value in this order).
-    //If it cannot enter any valid number at a square it adds the current combination of entered numbers to an array containing dead end combinations and undoes one already taken step or square from currentEnteredNumbersCombination (by removing it from the sudoku and current combination once we find it and storing it in the backtracking target point variable) and iterates the grid from the beginning again.
-    //The algorithm also checks that the current combination of entered numbers it keeps track of does not coincide with a previously found invalid combination of entered numbers if we add a number from a given set of numbers (the ones that may lead to a dead end current combination) if so such numbers are determined as invalid. 
+    //The algorithm tries to add a valid (not repeated in the same column, row and 3x3 block within the grid) number to each blank cell as it iterates 
+    //through the grid while keeping track of the combination of numbers that have been entered in the grid (these are stored in the currentCombination array as a length three tuple with row column and value in this order).
+    //If it cannot enter any valid number at a square it adds the current combination of entered numbers to an array containing dead end combinations and undoes one already 
+    //taken step or square from currentEnteredNumbersCombination (by removing it from the sudoku and current combination once we find it and storing it in the backtracking target point variable) and iterates the grid from the beginning again.
+    //The algorithm also checks that the current combination of entered numbers it keeps track of does not coincide with a previously found invalid combination of entered numbers 
+    //if we add a number or numbers. What we are doing is we are checkking what entering numbers give us a dead end combination at this specific square to not repeat ourselves. 
+    //If they give us a dead end combination they are declared invalid and as such added to invalidEnteringNumbersChoices
     //So we keep track of invalid combinations by adding them to a data structure whenever we find a dead end (square with no valid numbers to be entered) 
     //This all happens within a while loop that uses a condition checking that the number of blank squares is greatesr than zero for it to keep running.
     //As we add elements we decrease this variable and if we remove them we decrease it.
     //So there are two kinds of invalid numbers the ones that lead to already found dead end combinations and those which can be found in the same row, column or 3x3 grid as the blank row and column we find ourselves at
-    //We check for both conditions after the other. After checking each condition we check if we have run out of valid numbers (unavailableEnteringNumbers is equal to 9) we do this twice for each invalid number finding case that we mention in the comment line right above 
-    //The inner grid iterating for loop is broken if no valid numbers are found and an extra boolean variable is set to break the outer for loop and iterate through the grid again 
+    //We check for both conditions and after each check fill the invalidEnteringNumbersChoices array based on them. And after filling the array we check
+    // if we run out of valid numbers to enter at that specific square (in which case invalidEnteringNumbersChoices.length is one becue we make it unique and 
+    //can only add numbers from one to nine) we backtrack if not we add a new number using the array to know what numbers we can add by comparing it to possible numbers choices if we run out of valid numbers 
+    //We add the currentEnteredNumbersCombination to the dead end combinations array and pick a random pastly entered number from our same column row or
+    // 3x3 grid OR any pastly number it depends on whether we reached a dead end because of possible dead end combinations we may reach adding any number
+    // from our choices OR if it is due to repeated values. We take the number that we picked and remove it from the sudoku and its row column value tuple from currentEnteredNumbersCombination we subtract the loop's conditional variable. 
+    //And then the inner grid iterating for loop is broken if no valid numbers are found and an extra boolean variable is set to break the outer for loop and iterate through the grid again 
     //If on the contrary there are valid numbers we add a random number from that set to our square in the sudoku grid 2D array and add a new tuple to the currentEnteredNumbersCombination data structure 
     
-    //Note the program backtracks to a previously filled square within the same column row or 3x3 grid of no invalid numbers were found or by checking a random previously entered square in the case where what happens is that we have run out of numbers to add without ending up in a dead end combination 
+    //Note the program backtracks to a previously filled square within the same column row or 3x3 grid of no invalid numbers 
+    //were found or by checking a random previously entered square in the case where what happens is that we have run out of numbers to add without ending up in a dead end combination 
 
-    //Note: The algorithm checks for numbers within the same 3x3 row by using an extra array containing the row column indices contained within each 3x3 block wiithin the 9x9 sudokku grid (this variable is called rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
+    //Note: The algorithm checks for numbers within the same 3x3 row by using an extra array containing the row column indices contained 
+    //within each 3x3 block wiithin the 9x9 sudokku grid (this variable is called rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
     //It iterates through this array keeping track of the square we find ourselves at and compare the row column values with each row column pair within each block and if there is a match it knows what block it is in then by storing that block it uses the indices to extract the values from the 9x9 grid 
     //TODO: REFACTOR CODE 
+    
     var numberOfBlankSquaresForWhileLoopCounter: number = 0
     var backtrackingTargetPoint: RowColumnEnteredValueTuple = [0, 0, 0] //The square we are emptying to refill it with a new valid value that gets us out of the dead end 
     var possibleNumberChoices: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9] //The algorithm will iterate through this numbers after filling the unavailableNumbers array if the number is not found in the unavailableNumbers array- The algorithm will fill the blank with that number 
-    var unavailableEnteringNumbersChoices: number[] = [] //Numbers found on the same row, on the same column or on the same 3x3 grid or as part of a dead end combination. which we cannot repeat the number that the algorithm will enter in a blank square will be a number that is not found within this array BUT is found in the possibleNumberChoices array
+    var invalidEnteringNumbersChoices: number[] = [] //Numbers found on the same row, on the same column or on the same 3x3 grid or as part of a dead end combination. which we cannot repeat the number that the algorithm will enter in a blank square will be a number that is not found within this array BUT is found in the possibleNumberChoices array
     var numbersThatWeCanEnterIntoThisBlankSquare: number[] = []
-    var unavailableEnteringNumbersChoicesFromRepeatedValuesInRowColumnAndThreeByThreeGrid: number[] = []
     var performBacktracking: boolean = false 
     var newNumberToBeAdded: number = 0 
     var deadEndEnteredNumbersCombinations: RowColumnEnteredValueTuple[][] = [] //We will check if a number we are going to enter at any given time is found here at the same row and column ALONG with the rest of the currentEnteredNumbers commbination of rows columns numbers if so we add that number to unavailableNumbersForEntering  
@@ -95,11 +106,11 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                     squaresAttemptedCount++
                     console.log("SQUARES ATTEMPTED COUNT", squaresAttemptedCount)
                     console.log("CHECKING UNAVAILABLE NUMBERS FROM POSSIBLE DEAD END COMBINATIONS BEGGINING")
-                    findWhatEnteredNumbersIntoRowAndColumnWillLeadToDeadEndEnteredNumbersCombinationsIfThatCanHappen(unavailableEnteringNumbersChoices, i, j, deadEndEnteredNumbersCombinations, currentEnteredNumbersCombination)
-                    console.log("Unavailable entering numbers choices from possible dead end combinations", unavailableEnteringNumbersChoices)
+                    findWhatEnteredNumbersIntoRowAndColumnWillLeadToDeadEndEnteredNumbersCombinationsIfThatCanHappen(invalidEnteringNumbersChoices, i, j, deadEndEnteredNumbersCombinations, currentEnteredNumbersCombination)
+                    console.log("Unavailable entering numbers choices from possible dead end combinations", invalidEnteringNumbersChoices)
                     console.log("CHECKING UNAVAILABLE NUMBERS FROM POSSIBLE DEAD COMBINATIONS END")
                     //Note unavailableEnteringNumbersChoicesFromDeadEndCommbinationsPool may be emmpty but we do not need to check for that 
-                    if(unavailableEnteringNumbersChoices.length === 9){ // If our unavailable entering numbers choices cover the entire possible number choices range we have reached a dead end because unavailableEnteringNumbersChoices has unique values and we have numbers from one to nine only within our program so we add our currentCombination to the deadEndEnteredNumbersCombinations array 
+                    if(invalidEnteringNumbersChoices.length === 9){ // If our unavailable entering numbers choices cover the entire possible number choices range we have reached a dead end because unavailableEnteringNumbersChoices has unique values and we have numbers from one to nine only within our program so we add our currentCombination to the deadEndEnteredNumbersCombinations array 
                         console.log("DEAD END CASE BY DEAD END COMBINATION BEGINNING") 
                         deadEndEnteredNumbersCombinations.push([currentEnteredNumbersCombination].flat(1) as unknown as RowColumnEnteredValueTuple[])
                         performBacktracking = true 
@@ -112,7 +123,7 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                         console.log("Current entered numbers combination after removal", currentEnteredNumbersCombination)
                         //We do not need to update current row and current column to redo the step the step will be redone in the next while loop's iteration because it is behind so when  the grid has been finished                   
                         numberOfBlankSquaresForWhileLoopCounter++ 
-                        unavailableEnteringNumbersChoices = []
+                        invalidEnteringNumbersChoices = []
                         // console.log("PRINTING DEAD END COMBINATIONS BEGINNING")
                         // console.log(deadEndEnteredNumbersCombinations)
                         // console.log("PRINTING DEAD END COMBINATIONS END")
@@ -121,11 +132,11 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                         break 
                     } // We don't need an else since we break within this if statements 
                     console.log("CHECKING UNAVAILABLE NUMBERS FROM REPEATED VALUES BEGGINING")
-                    findNumbersWithinRowColumnOrThreeByThreeBlockWhereWeFindOurselves(unavailableEnteringNumbersChoices, sudokuGrid, i, j, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
-                    unavailableEnteringNumbersChoices = [... new Set(unavailableEnteringNumbersChoices)].filter((forbiddenNumbersToEnter) => forbiddenNumbersToEnter !== 0)
-                    console.log("Unavailable entering numbers choices from repeated values", unavailableEnteringNumbersChoices)
+                    findNumbersWithinRowColumnOrThreeByThreeBlockWhereWeFindOurselves(invalidEnteringNumbersChoices, sudokuGrid, i, j, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
+                    invalidEnteringNumbersChoices = [... new Set(invalidEnteringNumbersChoices)].filter((forbiddenNumbersToEnter) => forbiddenNumbersToEnter !== 0)
+                    console.log("Unavailable entering numbers choices from repeated values", invalidEnteringNumbersChoices)
                     console.log("CHECKING UNAVAILABLE NUMBERS FROM REPEATED VALUES END")
-                    if(unavailableEnteringNumbersChoices.length === 9) {
+                    if(invalidEnteringNumbersChoices.length === 9) {
                         console.log("DEAD END CASE BY REPEATED VALUES BEGINNING") 
                         if(deadEndEnteredNumbersCombinations.includes(currentEnteredNumbersCombination)) {console.log("Repeating forbidden combination")}
                         deadEndEnteredNumbersCombinations.push([currentEnteredNumbersCombination].flat(1) as unknown as RowColumnEnteredValueTuple[])
@@ -138,7 +149,7 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                         currentEnteredNumbersCombination = removeSquareValueFromSudokuAndSquareRowColumnAndValueFromCurrentEnteredNumbersCombination(sudokuGrid, currentEnteredNumbersCombination, backtrackingTargetPoint)
                         console.log("Current entered numbers combination after removal", currentEnteredNumbersCombination)
                         numberOfBlankSquaresForWhileLoopCounter++ 
-                        unavailableEnteringNumbersChoices = []
+                        invalidEnteringNumbersChoices = []
                         // console.log("PRINTING DEAD END COMBINATIONS BEGINNING")
                         // console.log(deadEndEnteredNumbersCombinations)
                         // console.log("PRINTING DEAD END COMBINATIONS END")
@@ -148,21 +159,21 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                     }
                     //Here we add the number to the square if there are numbers to fill our square with which we have already checked and since the loop has not broken by this point our checks have been successful 
                     for(var l = 0; l < possibleNumberChoices.length; l++){
-                        if(unavailableEnteringNumbersChoices.includes(possibleNumberChoices[l])){
+                        if(invalidEnteringNumbersChoices.includes(possibleNumberChoices[l])){
                             continue
                         } else {
                             numbersThatWeCanEnterIntoThisBlankSquare.push(possibleNumberChoices[l])
                         }
                     }
                     console.log("ADDING NEW SQUARE BEGINNING")
-                    console.log("Unavailable entering numbers for adding numbers", unavailableEnteringNumbersChoices)
+                    console.log("Unavailable entering numbers for adding numbers", invalidEnteringNumbersChoices)
                     console.log("Nummbers that we can enter into this blank square", numbersThatWeCanEnterIntoThisBlankSquare)
                     newNumberToBeAdded = numbersThatWeCanEnterIntoThisBlankSquare[Math.floor(Math.random() * numbersThatWeCanEnterIntoThisBlankSquare.length)] // We add the new number to our sudoku which is a random number from the numbers we can enter
                     sudokuGrid[i][j] = newNumberToBeAdded 
                     currentEnteredNumbersCombination.push([i, j, newNumberToBeAdded] as RowColumnEnteredValueTuple)
                     //La primera vez no está el past sudoku la segunda si y solo se hace esto al añadir un nuevo numbero esta claro que se repiten combinaciones
                     numbersThatWeCanEnterIntoThisBlankSquare = []
-                    unavailableEnteringNumbersChoices = []
+                    invalidEnteringNumbersChoices = []
                     numberOfBlankSquaresForWhileLoopCounter -= 1 
                     console.log("ADDING NEW SQUARE END")
                     console.log("SQUARE ATTEMPTED END")
