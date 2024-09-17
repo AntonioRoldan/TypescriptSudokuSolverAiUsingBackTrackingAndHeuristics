@@ -89,10 +89,8 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
     //NOTE: First we must find the number of blank squares there are so we can set a while loop that indefinitely runs the algorithm until all blanks have been filled 
     var backtrackingCounts = 0 
     var squaresAttemptedCount = 0
-    var pastSudokus: Grid[] = []
     var squaresVisitsCount = 0
     numberOfBlankSquaresForWhileLoopCounter  = findBlankSquaresAmountCounterForMainWhileLoop(sudokuGrid)
-    var blankSquaresAtStart = numberOfBlankSquaresForWhileLoopCounter
     
     while(numberOfBlankSquaresForWhileLoopCounter > 0){
         backtrackingCounts++
