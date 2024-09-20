@@ -4,31 +4,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sudokuSolver = (sudokuGrid = []) => {
     // Algorithm behavior: 
     //The algorithm tries to add a valid (not repeated in the same column, row and 3x3 block within the grid) number to each blank cell as it iterates 
-    //through the grid while keeping track of the combination of numbers that have been entered in the grid (these are stored in the currentCombination array as a length three tuple with row column and value in this order).
+    //through the grid while keeping track of the combination of numbers that have been entered in the grid to make the current entered numbers combination (these are stored in the currentCombination 
+    //array as a length three tuple with row column and value in this order).
     //If it cannot enter any valid number at a square it adds the current combination of entered numbers to an array containing dead end combinations and undoes one random already 
-    //taken step or square from currentEnteredNumbersCombination there are two ways in which the number is picked which will be explanied further below 
-    //(by removing it from the sudoku and current combination once we find it and storing it in the backtracking target point variable) and iterates the grid from the beginning again.
-    //The algorithm also checks that the current combination of entered numbers it keeps track of does not coincide with a previously found invalid combination of entered numbers 
-    //if we add a number or numbers. What we are doing is we are checkking what entering numbers give us a dead end combination at this specific square to not repeat ourselves. 
+    //taken step or square from currentEnteredNumbersCombination there are two ways in which the number is picked which will be explainsed further below 
+    //(this is why we are using the backtracking target point variable this variable is our chosen step to be undone) and iterates the grid from the beginning again.
+    //The algorithm checks that the current combination of entered numbers it keeps track of does not coincide with a previously found invalid combination of entered numbers 
+    //if we add a new number or numbers from our 1-9 choices. What we are doing is we are checking what entering numbers at the current blank square give us a dead end combination at this specific square to not repeat ourselves. 
     //If they give us a dead end combination they are declared invalid and as such added to invalidEnteringNumbersChoices
-    //So we keep track of invalid combinations by adding them to a data structure whenever we find a dead end (square with no valid numbers to be entered) 
+    //We keep track of invalid combinations by adding them to a data structure whenever we find a dead end (square with no valid numbers to be entered) this data structure is deadEndEnteredNumbersCombinations.
     //This all happens within a while loop that uses a condition checking that the number of blank squares is greatesr than zero for it to keep running.
     //As we add elements we decrease this variable and if we remove them we decrease it.
     //So there are two kinds of invalid numbers the ones that lead to already found dead end combinations and those which can be found in the same row, column or 3x3 grid as the blank row and column we find ourselves at
     //We check for both conditions and after each check fill the invalidEnteringNumbersChoices array based on them. And after filling the array we check
-    //If we run out of valid numbers to enter at that specific square (in which case invalidEnteringNumbersChoices.length is nine because we make it unique and 
-    //can only add numbers from one to nine) we backtrack if not we add a new number using the array to know what numbers we can add by comparing it to possible numbers choices if we run out of valid numbers 
-    //We add the currentEnteredNumbersCombination to the dead end combinations array and pick a random pastly entered number from our same column row or
+    //if we run out of valid numbers to enter at that specific square (in which case invalidEnteringNumbersChoices.length is nine because we make it unique and 
+    //can only add numbers from one to nine) we backtrack.
+    //If not we add a new number using the array to know what numbers we can add by comparing it to possible numbers choices. If we run out of valid numbers 
+    //we add the currentEnteredNumbersCombination to the dead end combinations array and pick a random pastly entered number from our same column row or
     // 3x3 grid OR any pastly entered number it depends on whether we reached a dead end because of possible dead end combinations we may reach adding any number
-    // from our 1-9 choices OR if it is due to repeated values. 
+    // from our 1-9 choices OR if it is due to repeated values these are the two different strategies used depending on the situation although I suspect they are equivalent.
     //We take the number that we picked and remove it from the sudoku and its row column value tuple from currentEnteredNumbersCombination we subtract the loop's conditional variable. 
     //And then the inner grid iterating for loop is broken if no valid numbers are found and an extra boolean variable is set to break the outer for loop and iterate through the grid again in the next while loops iteration
-    //If on the contrary there are valid numbers we add a random number from that set to our square in the sudoku grid 2D array and add a new tuple to the currentEnteredNumbersCombination data structure 
+    //If on the contrary there are valid numbers we add a random number from that set of valid numbers to our square in the sudoku grid 2D array and add a new tuple to the currentEnteredNumbersCombination data structure.
+    //Of course we have to decrease the while loop's conditional variable (that is the amount of blank squares left) by one in this case.
     //Note the program backtracks to a previously filled square within the same column row or 3x3 grid of no invalid numbers 
     //were found or by checking a random previously entered square in the case where what happens is that we have run out of numbers to add without ending up in a dead end combination 
     //Note: The algorithm checks for numbers within the same 3x3 row by using an extra array containing the row column indices contained 
     //within each 3x3 block wiithin the 9x9 sudokku grid (this variable is called rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
-    //It iterates through this array keeping track of the square we find ourselves at and compare the row column values with each row column pair within each block and if there is a match it knows what block it is in then by storing that block it uses the indices to extract the values from the 9x9 grid 
+    //It iterates through this array keeping track of the square we find ourselves at and compare the row column values with each row column pair 
+    // within each block and if there is a match it knows what block it is in then by storing that block it uses the indices to extract the values from the 9x9 grid 
     //TODO: REFACTOR CODE 
     var numberOfBlankSquaresForWhileLoopCounter = 0;
     var backtrackingTargetPoint = [0, 0, 0]; //The square we are emptying to refill it with a new valid value that gets us out of the dead end 
@@ -77,10 +81,8 @@ const sudokuSolver = (sudokuGrid = []) => {
     //NOTE: First we must find the number of blank squares there are so we can set a while loop that indefinitely runs the algorithm until all blanks have been filled 
     var backtrackingCounts = 0;
     var squaresAttemptedCount = 0;
-    var pastSudokus = [];
     var squaresVisitsCount = 0;
     numberOfBlankSquaresForWhileLoopCounter = findBlankSquaresAmountCounterForMainWhileLoop(sudokuGrid);
-    var blankSquaresAtStart = numberOfBlankSquaresForWhileLoopCounter;
     while (numberOfBlankSquaresForWhileLoopCounter > 0) {
         backtrackingCounts++;
         console.log("BACKTRACKING START IF THIS IS SHOWN SECOND TIME BACKTRACKING COUNTS NUMBER FOLLOWS SUBTRACT ONE FROM IT", backtrackingCounts);
@@ -129,7 +131,6 @@ const sudokuSolver = (sudokuGrid = []) => {
                     } // We don't need an else since we break within this if statements 
                     console.log("CHECKING UNAVAILABLE NUMBERS FROM REPEATED VALUES BEGGINING");
                     findNumbersWithinRowColumnOrThreeByThreeBlockWhereWeFindOurselves(invalidEnteringNumbersChoices, sudokuGrid, i, j, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid);
-                    invalidEnteringNumbersChoices = [...new Set(invalidEnteringNumbersChoices)].filter((forbiddenNumbersToEnter) => forbiddenNumbersToEnter !== 0);
                     console.log("Unavailable entering numbers choices from repeated values", invalidEnteringNumbersChoices);
                     console.log("CHECKING UNAVAILABLE NUMBERS FROM REPEATED VALUES END");
                     if (invalidEnteringNumbersChoices.length === 9) {
@@ -424,7 +425,7 @@ var sudoku = [[0, 0, 9, 0, 1, 0, 0, 3, 0], //Easy sudokku
     [6, 9, 4, 0, 5, 0, 3, 0, 0],
     [8, 0, 2, 3, 0, 6, 0, 7, 5],
     [0, 5, 0, 2, 0, 4, 0, 1, 6]];
-var sudoku = [[3, 7, 0, 0, 6, 2, 0, 0, 0], //Easy sudokku 
+sudoku = [[3, 7, 0, 0, 6, 2, 0, 0, 0], //Easy sudokku 
     [0, 2, 9, 1, 0, 0, 7, 0, 0],
     [5, 0, 1, 0, 0, 0, 9, 2, 8],
     [8, 0, 0, 4, 9, 6, 1, 0, 7],
@@ -433,7 +434,7 @@ var sudoku = [[3, 7, 0, 0, 6, 2, 0, 0, 0], //Easy sudokku
     [9, 8, 4, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 3, 0],
     [6, 1, 0, 0, 2, 0, 5, 4, 0]];
-var sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku 
+sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku 
     [2, 5, 0, 0, 0, 4, 0, 0, 1],
     [0, 1, 0, 0, 0, 0, 5, 4, 9],
     [5, 0, 1, 3, 0, 7, 0, 0, 0],
@@ -443,7 +444,7 @@ var sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku
     [8, 0, 0, 0, 6, 9, 0, 0, 7],
     [1, 0, 0, 0, 0, 0, 2, 8, 0]];
 var sudokuPuzzle = JSON.parse(JSON.stringify(sudoku));
-var sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku 
+sudoku = [[0, 8, 0, 0, 0, 0, 0, 7, 2], //Hard sudoku 
     [2, 5, 0, 0, 0, 4, 0, 0, 1],
     [0, 1, 0, 0, 0, 0, 5, 4, 9],
     [5, 0, 1, 3, 0, 7, 0, 0, 0],

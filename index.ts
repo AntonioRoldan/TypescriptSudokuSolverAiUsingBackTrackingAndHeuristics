@@ -32,7 +32,8 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
     
     //We take the number that we picked and remove it from the sudoku and its row column value tuple from currentEnteredNumbersCombination we subtract the loop's conditional variable. 
     //And then the inner grid iterating for loop is broken if no valid numbers are found and an extra boolean variable is set to break the outer for loop and iterate through the grid again in the next while loops iteration
-    //If on the contrary there are valid numbers we add a random number from that set to our square in the sudoku grid 2D array and add a new tuple to the currentEnteredNumbersCombination data structure 
+    //If on the contrary there are valid numbers we add a random number from that set of valid numbers to our square in the sudoku grid 2D array and add a new tuple to the currentEnteredNumbersCombination data structure.
+    //Of course we have to decrease the while loop's conditional variable (that is the amount of blank squares left) by one in this case.
     
     //Note the program backtracks to a previously filled square within the same column row or 3x3 grid of no invalid numbers 
     //were found or by checking a random previously entered square in the case where what happens is that we have run out of numbers to add without ending up in a dead end combination 
@@ -141,7 +142,6 @@ const sudokuSolver = (sudokuGrid: Grid = []) => {
                     } // We don't need an else since we break within this if statements 
                     console.log("CHECKING UNAVAILABLE NUMBERS FROM REPEATED VALUES BEGGINING")
                     findNumbersWithinRowColumnOrThreeByThreeBlockWhereWeFindOurselves(invalidEnteringNumbersChoices, sudokuGrid, i, j, rowAndColumnIndicesWithinEachThreeByThreeSubgridWithinSudokuGrid)
-                    invalidEnteringNumbersChoices = [... new Set(invalidEnteringNumbersChoices)].filter((forbiddenNumbersToEnter) => forbiddenNumbersToEnter !== 0)
                     console.log("Unavailable entering numbers choices from repeated values", invalidEnteringNumbersChoices)
                     console.log("CHECKING UNAVAILABLE NUMBERS FROM REPEATED VALUES END")
                     if(invalidEnteringNumbersChoices.length === 9) {
